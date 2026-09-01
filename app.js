@@ -14,22 +14,16 @@ function initializePartySlots() {
     console.log('パーティスロット初期化中...');
     
     const myPartyDiv = document.getElementById('myParty');
-    const enemyPartyDiv = document.getElementById('enemyParty');
     
     // 自分のパーティ：6匹分
     for (let i = 0; i < 6; i++) {
         myPartyDiv.appendChild(createPokemonSlot(`myPokemon${i}`));
     }
     
-    // 相手のパーティ：6匹分
-    for (let i = 0; i < 6; i++) {
-        enemyPartyDiv.appendChild(createPokemonSlot(`enemyPokemon${i}`));
-    }
-    
     console.log('パーティスロット作成完了');
 }
 
-// ポケモンスロットを作成（チェックボックス + プルダウン）
+// ポケモンスロットを作成（チェックボックス + タイププルダウン）
 function createPokemonSlot(id) {
     const div = document.createElement('div');
     div.className = 'pokemon-slot';
@@ -40,7 +34,6 @@ function createPokemonSlot(id) {
     checkbox.id = id + '-check';
     checkbox.checked = true;
     checkbox.addEventListener('change', function() {
-        // チェックボックスの状態に応じてスロットのスタイルを変更
         if (!checkbox.checked) {
             div.classList.add('disabled');
         } else {
@@ -53,13 +46,11 @@ function createPokemonSlot(id) {
     pokemonSelect.id = id + '-pokemon';
     pokemonSelect.className = 'pokemon-dropdown';
     
-    // 空の選択肢
     const emptyOption = document.createElement('option');
     emptyOption.value = '';
     emptyOption.textContent = 'ポケモンを選択';
     pokemonSelect.appendChild(emptyOption);
     
-    // ポケモンリストを追加
     pokemonList.forEach(pokemon => {
         const option = document.createElement('option');
         option.value = pokemon;
@@ -67,58 +58,127 @@ function createPokemonSlot(id) {
         pokemonSelect.appendChild(option);
     });
     
-    // ポケモン選択時にタイプを自動表示
     pokemonSelect.addEventListener('change', function() {
         updatePokemonTypes(id);
     });
     
-    // タイプ表示欄
-    const typesDiv = document.createElement('div');
-    typesDiv.className = 'types';
-    typesDiv.id = id + '-types';
+    // タイプ1プルダウン（検索可能）
+    const type1Container = document.createElement('div');
+    type1Container.className = 'type-input-container';
+    type1Container.id = id + '-type1-container';
     
-    // 初期表示：空
-    const emptyBadge = document.createElement('span');
-    emptyBadge.className = 'type-badge empty';
-    emptyBadge.textContent = '---';
-    typesDiv.appendChild(emptyBadge);
+    const type1Input = document.createElement('input');
+    type1Input.type = 'text';
+    type1Input.id = id + '-type1-search';
+    type1Input.className = 'type-search-input';
+    type1Input.placeholder = 'タイプ1';
+    type1Input.autocomplete = 'off';
+    
+    const type1Dropdown = document.createElement('div');
+    type1Dropdown.className = 'type-dropdown-list';
+    type1Dropdown.id = id + '-type1-dropdown';
+    
+    createTypeDropdown(type1Input, type1Dropdown, id + '-type1');
+    
+    type1Container.appendChild(type1Input);
+    type1Container.appendChild(type1Dropdown);
+    
+    // タイプ2プルダウン（検索可能）
+    const type2Container = document.createElement('div');
+    type2Container.className = 'type-input-container';
+    type2Container.id = id + '-type2-container';
+    
+    const type2Input = document.createElement('input');
+    type2Input.type = 'text';
+    type2Input.id = id + '-type2-search';
+    type2Input.className = 'type-search-input';
+    type2Input.placeholder = 'タイプ2';
+    type2Input.autocomplete = 'off';
+    
+    const type2Dropdown = document.createElement('div');
+    type2Dropdown.className = 'type-dropdown-list';
+    type2Dropdown.id = id + '-type2-dropdown';
+    
+    createTypeDropdown(type2Input, type2Dropdown, id + '-type2');
+    
+    type2Container.appendChild(type2Input);
+    type2Container.appendChild(type2Dropdown);
     
     div.appendChild(checkbox);
     div.appendChild(pokemonSelect);
-    div.appendChild(typesDiv);
+    div.appendChild(type1Container);
+    div.appendChild(type2Container);
     
     return div;
 }
 
+// タイプドロップダウンを作成
+function createTypeDropdown(input, dropdown, dataId) {
+    input.addEventListener('focus', function() {
+        showTypeDropdown(dropdown, input.value);
+        dropdown.style.display = 'block';
+    });
+    
+    input.addEventListener('input', function() {
+        showTypeDropdown(dropdown, input.value);
+    });
+    
+    input.addEventListener('blur', function() {
+        setTimeout(() => {
+            dropdown.style.display = 'none';
+        }, 200);
+    });
+}
+
+// タイプドロップダウンを表示
+function showTypeDropdown(dropdown, searchText) {
+    dropdown.innerHTML = '';
+    
+    const searchHiragana = toHiragana(searchText.toLowerCase());
+    
+    typeList.forEach(type => {
+        const typeHiragana = toHiragana(type.jp.toLowerCase());
+        
+        // ひらがな検索に対応
+        if (typeHiragana.includes(searchHiragana) || type.jp.includes(searchText)) {
+            const item = document.createElement('div');
+            item.className = 'type-dropdown-item';
+            item.textContent = type.jp;
+            
+            item.addEventListener('click', function() {
+                const input = dropdown.previousElementSibling;
+                input.value = type.jp;
+                input.dataset.type = type.en;
+                dropdown.style.display = 'none';
+            });
+            
+            dropdown.appendChild(item);
+        }
+    });
+}
+
 // ポケモン選択時にタイプを更新
 function updatePokemonTypes(id) {
-    const pokemonSelect = document.getElementById(id + '-pokemon');
-    const pokemonName = pokemonSelect.value;
-    const typesDiv = document.getElementById(id + '-types');
-    
-    console.log(`ポケモン選択: ${id} = "${pokemonName}"`);
-    
-    // タイプバッジをクリア
-    typesDiv.innerHTML = '';
+    const pokemonName = document.getElementById(id + '-pokemon').value;
     
     if (pokemonName && pokemonDatabase[pokemonName]) {
         const pokemonInfo = pokemonDatabase[pokemonName];
         const types = pokemonInfo.types;
         
-        console.log(`タイプ: ${pokemonName} -> ${types.join(', ')}`);
+        // タイプ1を設定
+        const type1Input = document.getElementById(id + '-type1-search');
+        type1Input.value = getTypeNameJP(types[0]);
+        type1Input.dataset.type = types[0];
         
-        types.forEach(type => {
-            const badge = document.createElement('span');
-            badge.className = 'type-badge';
-            badge.textContent = getTypeNameJP(type);
-            typesDiv.appendChild(badge);
-        });
-    } else {
-        // ポケモンが選択されていない場合は空のバッジを表示
-        const emptyBadge = document.createElement('span');
-        emptyBadge.className = 'type-badge empty';
-        emptyBadge.textContent = '---';
-        typesDiv.appendChild(emptyBadge);
+        // タイプ2を設定（あれば）
+        const type2Input = document.getElementById(id + '-type2-search');
+        if (types[1]) {
+            type2Input.value = getTypeNameJP(types[1]);
+            type2Input.dataset.type = types[1];
+        } else {
+            type2Input.value = '';
+            type2Input.dataset.type = '';
+        }
     }
 }
 
@@ -127,38 +187,50 @@ function analyzeParty() {
     console.log('パーティ分析開始');
     
     const myParty = getPartyData('myPokemon');
-    const enemyParty = getPartyData('enemyPokemon');
     
     console.log('自分のパーティ:', myParty);
-    console.log('相手のパーティ:', enemyParty);
     
     // 入力チェック
-    if (myParty.length === 0 || enemyParty.length === 0) {
-        showResult('<div class="warning">⚠️ 自分と相手の両方に最低1匹以上ポケモンを選択してください</div>');
+    if (myParty.length === 0) {
+        showResult('<div class="warning">⚠️ 最低1匹以上ポケモン（またはタイプ）を入力してください</div>');
         return;
     }
     
     // 分析を実行
-    const analysis = analyzeTypeMatchups(myParty, enemyParty);
+    const analysis = analyzeOwnPartyWeakness(myParty);
     
     // 結果を表示
-    displayAnalysisResult(analysis, myParty, enemyParty);
+    displayAnalysisResult(analysis, myParty);
 }
 
-// パーティデータを取得（チェックボックスがONのもののみ）
+// パーティデータを取得（チェックボックスがONのものだけ）
 function getPartyData(prefix) {
     const party = [];
     
     for (let i = 0; i < 6; i++) {
         const checkbox = document.getElementById(`${prefix}${i}-check`);
         const pokemonName = document.getElementById(`${prefix}${i}-pokemon`).value.trim();
+        const type1 = document.getElementById(`${prefix}${i}-type1-search`).dataset.type || '';
+        const type2 = document.getElementById(`${prefix}${i}-type2-search`).dataset.type || '';
         
-        // チェックボックスがONかつポケモンが選択されている場合のみ追加
-        if (checkbox.checked && pokemonName && pokemonDatabase[pokemonName]) {
+        if (!checkbox.checked) continue;
+        
+        // ポケモンが選択されていればそれを使用、なければタイプから判定
+        if (pokemonName && pokemonDatabase[pokemonName]) {
             const pokemonInfo = pokemonDatabase[pokemonName];
             party.push({
                 name: pokemonName,
                 types: pokemonInfo.types
+            });
+        } else if (type1) {
+            // ポケモン未選択でもタイプがあれば使用
+            const types = [type1];
+            if (type2 && type2 !== type1) {
+                types.push(type2);
+            }
+            party.push({
+                name: `(${types.map(t => getTypeNameJP(t)).join('/')})`,
+                types: types
             });
         }
     }
@@ -166,35 +238,43 @@ function getPartyData(prefix) {
     return party;
 }
 
-// タイプマッチアップを分析
-function analyzeTypeMatchups(myParty, enemyParty) {
+// 自分のパーティの弱点の一貫性を分析
+function analyzeOwnPartyWeakness(myParty) {
     const analysis = {
-        myWeaknesses: {},      // 自分の弱点
-        typeStatus: {}         // 各タイプの状態
+        typeWeakness: {},     // 各タイプが弱点とする攻撃タイプ
+        typeStatus: {}        // 各タイプが自分のパーティ内で対応できているか
     };
     
-    // 相手の全タイプを集める
-    const enemyTypes = new Set();
-    enemyParty.forEach(pokemon => {
+    // 自分のパーティの全防御タイプを集める
+    const myDefTypes = new Set();
+    myParty.forEach(pokemon => {
         pokemon.types.forEach(type => {
             if (typeChart[type]) {
-                enemyTypes.add(type);
+                myDefTypes.add(type);
             }
         });
     });
     
-    // 各タイプの状態を初期化
-    enemyTypes.forEach(type => {
-        analysis.typeStatus[type] = {
-            type: type,
-            isConsistent: true,  // 初期状態：一貫している
-            superEffective: [],  // 抜群を受けるタイプ
-            resistance: []       // 半減以下を受けるタイプ
+    // 各防御タイプの弱点を記録
+    myDefTypes.forEach(defType => {
+        const def = defenseChart[defType];
+        if (!def) return;
+        
+        analysis.typeWeakness[defType] = {
+            type: defType,
+            weakness: def.weakness  // このタイプが弱点とする攻撃タイプ
         };
     });
     
-    // 相手の各攻撃タイプについて、自分のパーティがどう対応しているか確認
-    enemyTypes.forEach(attackType => {
+    // 各弱点タイプについて、自分のパーティで対応できているか確認
+    const allWeaknesses = new Set();
+    Object.values(analysis.typeWeakness).forEach(typeInfo => {
+        typeInfo.weakness.forEach(weakType => {
+            allWeaknesses.add(weakType);
+        });
+    });
+    
+    allWeaknesses.forEach(attackType => {
         const canResist = myParty.some(pokemon => {
             return pokemon.types.some(defType => {
                 const def = defenseChart[defType];
@@ -207,64 +287,18 @@ function analyzeTypeMatchups(myParty, enemyParty) {
             });
         });
         
-        if (canResist) {
-            // 誰かが対応できる → 一貫していない
-            analysis.typeStatus[attackType].isConsistent = false;
-        }
-    });
-    
-    // 自分の各タイプの弱点を計算
-    myParty.forEach(pokemon => {
-        pokemon.types.forEach(defType => {
-            const def = defenseChart[defType];
-            if (!def) return;
-            
-            // この防御タイプの弱点
-            def.weakness.forEach(attackType => {
-                if (!analysis.myWeaknesses[attackType]) {
-                    analysis.myWeaknesses[attackType] = [];
-                }
-                analysis.myWeaknesses[attackType].push(defType);
-            });
-        });
-    });
-    
-    // 各タイプの抜群と半減を計算
-    enemyTypes.forEach(attackType => {
-        const attack = typeChart[attackType];
-        
-        // 抜群（このタイプで弱点になる）
-        myParty.forEach(pokemon => {
-            pokemon.types.forEach(defType => {
-                if (defenseChart[defType] && defenseChart[defType].weakness.includes(attackType)) {
-                    if (!analysis.typeStatus[attackType].superEffective.includes(defType)) {
-                        analysis.typeStatus[attackType].superEffective.push(defType);
-                    }
-                }
-            });
-        });
-        
-        // 半減以下（このタイプで耐性・無効になる）
-        myParty.forEach(pokemon => {
-            pokemon.types.forEach(defType => {
-                const def = defenseChart[defType];
-                if (def) {
-                    if (def.resistance.includes(attackType) || def.immunity.includes(attackType)) {
-                        if (!analysis.typeStatus[attackType].resistance.includes(defType)) {
-                            analysis.typeStatus[attackType].resistance.push(defType);
-                        }
-                    }
-                }
-            });
-        });
+        analysis.typeStatus[attackType] = {
+            type: attackType,
+            isConsistent: !canResist  // 対応できなければ一貫している
+        };
     });
     
     return analysis;
 }
 
 // 分析結果を表示
-function displayAnalysisResult(analysis, myParty, enemyParty) {
-    let html = '<div class="result-title">📊 パーティ分析結果</div>';
+function displayAnalysisResult(analysis, myParty) {
+    let html = '<div class="result-title">📊 パーティ弱点分析結果</div>';
     
     // 自分のパーティ表示
     html += '<div class="result-section">';
@@ -276,52 +310,40 @@ function displayAnalysisResult(analysis, myParty, enemyParty) {
     });
     html += '</div></div>';
     
-    // 相手のパーティ表示
+    // パーティの弱点一覧（タイプごと）
     html += '<div class="result-section">';
-    html += '<h4>🎯 相手のパーティ</h4>';
-    html += '<div class="result-content">';
-    enemyParty.forEach(p => {
-        const typeStr = p.types.map(t => getTypeNameJP(t)).join('／');
-        html += `<div>• ${p.name} (${typeStr})</div>`;
-    });
-    html += '</div></div>';
+    html += '<h4>🛡️ パーティ内のタイプごとの弱点と一貫性</h4>';
     
-    // タイプ相性表（一貫しているタイプを上に）
-    html += '<div class="result-section">';
-    html += '<h4>⚔️ タイプ相性一覧</h4>';
-    
-    // タイプを一貫性でソート（一貫している = true を上に）
-    const sortedTypes = Object.values(analysis.typeStatus).sort((a, b) => {
-        if (a.isConsistent !== b.isConsistent) {
-            return b.isConsistent - a.isConsistent;  // true が上に来る
-        }
-        return 0;
+    const typeWeaknessArray = Object.values(analysis.typeWeakness).sort((a, b) => {
+        return getTypeNameJP(a.type).localeCompare(getTypeNameJP(b.type));
     });
     
-    if (sortedTypes.length === 0) {
-        html += '<div class="success">✅ 相手に一貫タイプがありません！</div>';
+    if (typeWeaknessArray.length === 0) {
+        html += '<div class="success">✅ パーティにタイプが設定されていません</div>';
     } else {
         html += '<table class="type-table">';
         html += '<thead><tr>';
         html += '<th>タイプ</th>';
-        html += '<th>状態</th>';
-        html += '<th>抜群（弱点）</th>';
-        html += '<th>半減以下（耐性）</th>';
+        html += '<th>弱点</th>';
+        html += '<th>弱点の一貫性</th>';
         html += '</tr></thead>';
         html += '<tbody>';
         
-        sortedTypes.forEach(typeInfo => {
-            const rowClass = typeInfo.isConsistent ? 'consistent' : '';
-            const statusText = typeInfo.isConsistent ? '🚨 一貫' : '✅ 対応';
-            const statusClass = typeInfo.isConsistent ? 'super-effective' : 'resistance';
-            const superEffectiveTypes = typeInfo.superEffective.map(t => getTypeNameJP(t)).join(', ') || 'なし';
-            const resistanceTypes = typeInfo.resistance.map(t => getTypeNameJP(t)).join(', ') || 'なし';
+        typeWeaknessArray.forEach(typeInfo => {
+            const weaknesses = typeInfo.weakness.map(t => getTypeNameJP(t)).join('、');
             
-            html += `<tr class="${rowClass}">`;
+            // この防御タイプの各弱点について一貫性を確認
+            const weaknessConsistency = typeInfo.weakness.map(weakType => {
+                const isConsistent = analysis.typeStatus[weakType]?.isConsistent || false;
+                const statusText = isConsistent ? '🚨 一貫' : '✅ 対応';
+                const statusClass = isConsistent ? 'consistent' : 'resistance';
+                return `<span class="${statusClass}">${getTypeNameJP(weakType)}: ${statusText}</span>`;
+            }).join('、');
+            
+            html += `<tr>`;
             html += `<td class="type-name">${getTypeNameJP(typeInfo.type)}</td>`;
-            html += `<td class="${statusClass}"><strong>${statusText}</strong></td>`;
-            html += `<td>${superEffectiveTypes}</td>`;
-            html += `<td>${resistanceTypes}</td>`;
+            html += `<td>${weaknesses || 'なし'}</td>`;
+            html += `<td>${weaknessConsistency || 'なし'}</td>`;
             html += `</tr>`;
         });
         
@@ -330,25 +352,25 @@ function displayAnalysisResult(analysis, myParty, enemyParty) {
     }
     html += '</div>';
     
-    // 自分の弱点分析
+    // 全体的な一貫タイプ
     html += '<div class="result-section">';
-    html += '<h4>🛡️ 自分のパーティの弱点</h4>';
-    html += '<div class="result-content">';
+    html += '<h4>⚔️ パーティ全体で対応できていない攻撃タイプ（一貫タイプ）</h4>';
     
-    const weaknessTypes = Object.keys(analysis.myWeaknesses).sort();
-    if (weaknessTypes.length === 0) {
-        html += '<div style="color: green; font-weight: bold;">弱点がありません！</div>';
+    const consistentTypes = Object.values(analysis.typeStatus)
+        .filter(t => t.isConsistent)
+        .sort((a, b) => getTypeNameJP(a.type).localeCompare(getTypeNameJP(b.type)));
+    
+    if (consistentTypes.length === 0) {
+        html += '<div class="success">✅ 一貫タイプはありません！パーティの全弱点に対応できています。</div>';
     } else {
-        weaknessTypes.forEach(weakType => {
-            const affectedDefTypes = analysis.myWeaknesses[weakType];
-            const uniqueDefTypes = [...new Set(affectedDefTypes)];
-            html += `<div style="margin-bottom: 8px;">`;
-            html += `<strong>${getTypeNameJP(weakType)}</strong> 攻撃が弱点：`;
-            html += `${uniqueDefTypes.map(t => getTypeNameJP(t)).join(', ')}`;
-            html += `</div>`;
+        html += '<div class="warning">⚠️ 以下のタイプが一貫しています：</div>';
+        html += '<div class="type-list">';
+        consistentTypes.forEach(type => {
+            html += `<span class="type-result-badge weak">${getTypeNameJP(type.type)}</span>`;
         });
+        html += '</div>';
     }
-    html += '</div></div>';
+    html += '</div>';
     
     showResult(html);
 }

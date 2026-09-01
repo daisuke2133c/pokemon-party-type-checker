@@ -47,7 +47,7 @@ p {
 
 .parties-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 30px;
     margin-bottom: 20px;
 }
@@ -74,7 +74,7 @@ p {
 .pokemon-slot {
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: flex-start;
     background: white;
     padding: 12px;
     border-radius: 8px;
@@ -89,10 +89,12 @@ p {
     width: 20px;
     height: 20px;
     cursor: pointer;
+    margin-top: 5px;
+    flex-shrink: 0;
 }
 
 .pokemon-dropdown {
-    flex: 1;
+    flex: 0 0 150px;
     padding: 8px;
     border: 2px solid #667eea;
     border-radius: 6px;
@@ -107,27 +109,53 @@ p {
     box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
 }
 
-.types {
-    display: flex;
-    gap: 6px;
-    min-width: 120px;
+.type-input-container {
+    position: relative;
+    flex: 0 0 120px;
 }
 
-.type-badge {
-    padding: 6px 10px;
-    background: #667eea;
-    color: white;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.85em;
-    text-align: center;
-    min-width: 50px;
-    white-space: nowrap;
+.type-search-input {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid #667eea;
+    border-radius: 6px;
+    font-size: 0.95em;
+    font-family: 'Arial', sans-serif;
 }
 
-.type-badge.empty {
-    background: #ddd;
-    color: #999;
+.type-search-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+}
+
+.type-dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #667eea;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 100;
+}
+
+.type-dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+}
+
+.type-dropdown-item:hover {
+    background: #f0f0f0;
+}
+
+.type-dropdown-item:last-child {
+    border-bottom: none;
 }
 
 button {
@@ -211,37 +239,42 @@ button:active {
     background: #f5f5f5;
 }
 
-.type-table tr.consistent {
-    background: #d4edda;
-    border-left: 4px solid #28a745;
-}
-
 .type-table .type-name {
     font-weight: bold;
     color: #333;
 }
 
-.type-table .super-effective {
+.type-table .consistent {
     color: #dc3545;
+    font-weight: bold;
 }
 
 .type-table .resistance {
     color: #28a745;
+    font-weight: bold;
 }
 
-.type-badge-small {
-    display: inline-block;
-    padding: 4px 8px;
-    background: #667eea;
+.type-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.type-result-badge {
+    padding: 8px 12px;
+    background: white;
+    border: 2px solid #667eea;
+    color: #667eea;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+.type-result-badge.weak {
+    background: #dc3545;
     color: white;
-    border-radius: 3px;
-    font-size: 0.8em;
-    margin-right: 4px;
-    margin-bottom: 4px;
-}
-
-.type-badge-small.consistent {
-    background: #28a745;
+    border-color: #dc3545;
 }
 
 .warning {
