@@ -386,49 +386,40 @@ function displayAnalysisResult(myAnalysis, myParty, enemyAnalysis, enemyParty) {
 }
 
 // タイプ弱点テーブルを表示
-function displayTypeWeaknessTable(label, analysis) {
-    let html = '<div class="result-section">';
-    html += `<h4>🛡️ ${label}のパーティ内タイプごとの弱点と一貫性</h4>`;
-    
-    const typeWeaknessArray = Object.values(analysis.typeWeakness).sort((a, b) => {
-        return getTypeNameJP(a.type).localeCompare(getTypeNameJP(b.type));
+function displayTypeWeaknessTable(analysis) {
+    const container = document.getElementById('type-weakness-table');
+
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>攻撃タイプ</th>
+                    <th>一貫</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    Object.keys(analysis.typeStatus).forEach(type => {
+        // 一貫していないタイプは表示しない
+        if (!analysis.typeStatus[type].isConsistent) {
+            return;
+        }
+
+        html += `
+            <tr>
+                <td class="type-name">${getTypeNameJP(type)}</td>
+                <td>🚨 一貫</td>
+            </tr>
+        `;
     });
-    
-    if (typeWeaknessArray.length === 0) {
-        html += '<div class="success">✅ パーティにタイプが設定されていません</div>';
-    } else {
-        html += '<table class="type-table">';
-        html += '<thead><tr>';
-        html += '<th>タイプ</th>';
-        html += '<th>弱点</th>';
-        html += '<th>弱点の一貫性</th>';
-        html += '</tr></thead>';
-        html += '<tbody>';
-        
-        typeWeaknessArray.forEach(typeInfo => {
-            const weaknesses = typeInfo.weakness.map(t => getTypeNameJP(t)).join('、');
-            
-            // このタイプの各弱点について一貫性を確認
-            const weaknessConsistency = typeInfo.weakness.map(weakType => {
-                const isConsistent = analysis.typeStatus[weakType]?.isConsistent || false;
-                const statusText = isConsistent ? '🚨 一貫' : '✅ 対応';
-                const statusClass = isConsistent ? 'consistent' : 'resistance';
-                return `<span class="${statusClass}">${getTypeNameJP(weakType)}: ${statusText}</span>`;
-            }).join('、');
-            
-            html += `<tr>`;
-            html += `<td class="type-name">${getTypeNameJP(typeInfo.type)}</td>`;
-            html += `<td>${weaknesses || 'なし'}</td>`;
-            html += `<td>${weaknessConsistency || 'なし'}</td>`;
-            html += `</tr>`;
-        });
-        
-        html += '</tbody>';
-        html += '</table>';
-    }
-    html += '</div>';
-    
-    return html;
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    container.innerHTML = html;
 }
 
 // 結果を表示する
