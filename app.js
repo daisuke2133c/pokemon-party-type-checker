@@ -290,9 +290,15 @@ function analyzeOwnPartyWeakness(party) {
             return multiplier >= 2;
         });
 
+        // 全員が等倍かどうか
+        const allNeutral = party.length > 0 && party.every(pokemon => {
+            return getTypeMultiplier(attackType, pokemon.types) === 1;
+        });
+
         analysis.typeStatus[attackType] = {
             type: attackType,
-            isConsistent: hasWeakness && !canResist
+            isConsistent: (hasWeakness || allNeutral) && !canResist,
+            consistencyType: allNeutral ? 'neutral' : 'weakness'
         };
     });
 
@@ -400,12 +406,22 @@ function displayTypeWeaknessTable(label, analysis) {
         html += '<table class="type-table">';
         html += '<thead><tr>';
         html += '<th>攻撃タイプ</th>';
+        html += '<th>一貫の種類</th>';
         html += '</tr></thead>';
         html += '<tbody>';
 
         consistentTypes.forEach(type => {
+            const status = analysis.typeStatus[type].consistencyType;
+
             html += '<tr>';
             html += `<td class="type-name">${getTypeNameJP(type)}</td>`;
+
+            if (status === 'neutral') {
+                html += '<td>🟠 等倍一貫</td>';
+            } else {
+                html += '<td>🔴 弱点一貫</td>';
+            }
+
             html += '</tr>';
         });
 
