@@ -14,10 +14,16 @@ function initializePartySlots() {
     console.log('パーティスロット初期化中...');
     
     const myPartyDiv = document.getElementById('myParty');
+    const enemyPartyDiv = document.getElementById('enemyParty');
     
     // 自分のパーティ：6匹分
     for (let i = 0; i < 6; i++) {
         myPartyDiv.appendChild(createPokemonSlot(`myPokemon${i}`));
+    }
+    
+    // 相手のパーティ：6匹分
+    for (let i = 0; i < 6; i++) {
+        enemyPartyDiv.appendChild(createPokemonSlot(`enemyPokemon${i}`));
     }
     
     console.log('パーティスロット作成完了');
@@ -187,23 +193,26 @@ function analyzeParty() {
     console.log('パーティ分析開始');
     
     const myParty = getPartyData('myPokemon');
+    const enemyParty = getPartyData('enemyPokemon');
     
     console.log('自分のパーティ:', myParty);
+    console.log('相手のパーティ:', enemyParty);
     
     // 入力チェック
     if (myParty.length === 0) {
-        showResult('<div class="warning">⚠️ 最低1匹以上ポケモン（またはタイプ）を入力してください</div>');
+        showResult('<div class="warning">⚠️ 最低1匹以上ポケモン（または\タイプ）を入力してください</div>');
         return;
     }
     
     // 分析を実行
-    const analysis = analyzeOwnPartyWeakness(myParty);
+    const myAnalysis = analyzeOwnPartyWeakness(myParty);
+    const enemyAnalysis = enemyParty.length > 0 ? analyzeOwnPartyWeakness(enemyParty) : null;
     
     // 結果を表示
-    displayAnalysisResult(analysis, myParty);
+    displayAnalysisResult(myAnalysis, myParty, enemyAnalysis, enemyParty);
 }
 
-// パーティデータを取得（チェックボックスがONのものだけ）
+// パーティデータを取得（チェックボックスがONのもの）
 function getPartyData(prefix) {
     const party = [];
     
@@ -239,24 +248,24 @@ function getPartyData(prefix) {
 }
 
 // 自分のパーティの弱点の一貫性を分析
-function analyzeOwnPartyWeakness(myParty) {
+function analyzeOwnPartyWeakness(party) {
     const analysis = {
         typeWeakness: {},     // 各タイプが弱点とする攻撃タイプ
-        typeStatus: {}        // 各タイプが自分のパーティ内で対応できているか
+        typeStatus: {}        // 各タイプが対応できているか
     };
     
-    // 自分のパーティの全防御タイプを集める
-    const myDefTypes = new Set();
-    myParty.forEach(pokemon => {
+    // パーティの全防御タイプを集める
+    const defTypes = new Set();
+    party.forEach(pokemon => {
         pokemon.types.forEach(type => {
             if (typeChart[type]) {
-                myDefTypes.add(type);
+                defTypes.add(type);
             }
         });
     });
     
     // 各防御タイプの弱点を記録
-    myDefTypes.forEach(defType => {
+    defTypes.forEach(defType => {
         const def = defenseChart[defType];
         if (!def) return;
         
@@ -266,7 +275,7 @@ function analyzeOwnPartyWeakness(myParty) {
         };
     });
     
-    // 各弱点タイプについて、自分のパーティで対応できているか確認
+    // 各弱点タイプについて、パーティで対応できているか確認
     const allWeaknesses = new Set();
     Object.values(analysis.typeWeakness).forEach(typeInfo => {
         typeInfo.weakness.forEach(weakType => {
@@ -275,7 +284,7 @@ function analyzeOwnPartyWeakness(myParty) {
     });
     
     allWeaknesses.forEach(attackType => {
-        const canResist = myParty.some(pokemon => {
+        const canResist = party.some(pokemon => {
             return pokemon.types.some(defType => {
                 const def = defenseChart[defType];
                 if (!def) return false;
@@ -297,7 +306,7 @@ function analyzeOwnPartyWeakness(myParty) {
 }
 
 // 分析結果を表示
-function displayAnalysisResult(analysis, myParty) {
+function displayAnalysisResult(myAnalysis, myParty, enemyAnalysis, enemyParty) {
     let html = '<div class="result-title">📊 パーティ弱点分析結果</div>';
     
     // 自分のパーティ表示
@@ -305,14 +314,36 @@ function displayAnalysisResult(analysis, myParty) {
     html += '<h4>👤 自分のパーティ</h4>';
     html += '<div class="result-content">';
     myParty.forEach(p => {
-        const typeStr = p.types.map(t => getTypeNameJP(t)).join('／');
+        const typeStr = p.types.map(t => getTypeNameJP(t)).join('/');
         html += `<div>• ${p.name} (${typeStr})</div>`;
     });
     html += '</div></div>';
     
-    // パーティの弱点一覧（タイプごと）
-    html += '<div class="result-section">';
-    html += '<h4>🛡️ パーティ内のタイプごとの弱点と一貫性</h4>';
+    // 自分のパーティの弱点分析
+    html += displayTypeWeaknessTable('自分', myAnalysis);
+    
+    // 相手のパーティ表示
+    if (enemyParty.length > 0) {
+        html += '<div class="result-section">';
+        html += '<h4>🎯 相手のパーティ</h4>';
+        html += '<div class="result-content">';
+        enemyParty.forEach(p => {
+            const typeStr = p.types.map(t => getTypeNameJP(t)).join('/');
+            html += `<div>• ${p.name} (${typeStr})</div>`;
+        });
+        html += '</div></div>';
+        
+        // 相手のパーティの弱点分析
+        html += displayTypeWeaknessTable('相手', enemyAnalysis);
+    }
+    
+    showResult(html);
+}
+
+// タイプ弱点テーブルを表示
+function displayTypeWeaknessTable(label, analysis) {
+    let html = '<div class="result-section">';
+    html += `<h4>🛡️ ${label}のパーティ内タイプごとの弱点と一貫性</h4>`;
     
     const typeWeaknessArray = Object.values(analysis.typeWeakness).sort((a, b) => {
         return getTypeNameJP(a.type).localeCompare(getTypeNameJP(b.type));
@@ -332,7 +363,7 @@ function displayAnalysisResult(analysis, myParty) {
         typeWeaknessArray.forEach(typeInfo => {
             const weaknesses = typeInfo.weakness.map(t => getTypeNameJP(t)).join('、');
             
-            // この防御タイプの各弱点について一貫性を確認
+            // このタイプの各弱点について一貫性を確認
             const weaknessConsistency = typeInfo.weakness.map(weakType => {
                 const isConsistent = analysis.typeStatus[weakType]?.isConsistent || false;
                 const statusText = isConsistent ? '🚨 一貫' : '✅ 対応';
@@ -352,27 +383,7 @@ function displayAnalysisResult(analysis, myParty) {
     }
     html += '</div>';
     
-    // 全体的な一貫タイプ
-    html += '<div class="result-section">';
-    html += '<h4>⚔️ パーティ全体で対応できていない攻撃タイプ（一貫タイプ）</h4>';
-    
-    const consistentTypes = Object.values(analysis.typeStatus)
-        .filter(t => t.isConsistent)
-        .sort((a, b) => getTypeNameJP(a.type).localeCompare(getTypeNameJP(b.type)));
-    
-    if (consistentTypes.length === 0) {
-        html += '<div class="success">✅ 一貫タイプはありません！パーティの全弱点に対応できています。</div>';
-    } else {
-        html += '<div class="warning">⚠️ 以下のタイプが一貫しています：</div>';
-        html += '<div class="type-list">';
-        consistentTypes.forEach(type => {
-            html += `<span class="type-result-badge weak">${getTypeNameJP(type.type)}</span>`;
-        });
-        html += '</div>';
-    }
-    html += '</div>';
-    
-    showResult(html);
+    return html;
 }
 
 // 結果を表示する

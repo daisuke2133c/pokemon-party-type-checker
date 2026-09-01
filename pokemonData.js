@@ -11,26 +11,26 @@ const pokemonDatabase = {
 // ポケモンリスト
 const pokemonList = Object.keys(pokemonDatabase);
 
-// タイプリスト（日本語と英語のマッピング）
+// タイプリスト（ひらがなのみ）
 const typeList = [
     { jp: 'ノーマル', en: 'normal' },
-    { jp: '炎', en: 'fire' },
-    { jp: '水', en: 'water' },
-    { jp: '電気', en: 'electric' },
-    { jp: '草', en: 'grass' },
-    { jp: '氷', en: 'ice' },
-    { jp: '格闘', en: 'fighting' },
-    { jp: '毒', en: 'poison' },
-    { jp: '地面', en: 'ground' },
-    { jp: '飛行', en: 'flying' },
+    { jp: 'ほのお', en: 'fire' },
+    { jp: 'みず', en: 'water' },
+    { jp: 'でんき', en: 'electric' },
+    { jp: 'くさ', en: 'grass' },
+    { jp: 'こおり', en: 'ice' },
+    { jp: 'かくとう', en: 'fighting' },
+    { jp: 'どく', en: 'poison' },
+    { jp: 'じめん', en: 'ground' },
+    { jp: 'ひこう', en: 'flying' },
     { jp: 'エスパー', en: 'psychic' },
     { jp: 'むし', en: 'insect' },
-    { jp: '岩', en: 'rock' },
+    { jp: 'いわ', en: 'rock' },
     { jp: 'ゴースト', en: 'ghost' },
     { jp: 'ドラゴン', en: 'dragon' },
-    { jp: '悪', en: 'dark' },
-    { jp: '鋼', en: 'steel' },
-    { jp: '妖精', en: 'fairy' }
+    { jp: 'あく', en: 'dark' },
+    { jp: 'はがね', en: 'steel' },
+    { jp: 'フェアリー', en: 'fairy' }
 ];
 
 // カタカナをひらがなに変換する関数
