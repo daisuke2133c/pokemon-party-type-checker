@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポケモンチャンピオンズ タイプ補完チェッカー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔥ポケモンチャンピオンズ⚡</h1>
+        <h2>タイプ補完チェッカー</h2>
+        
+        <section class="section">
+            <p>自分と相手のパーティのタイプを入力して、パーティ全体の弱点と一貫性を分析できます。</p>
+            
+            <div class="parties-container">
+                <!-- 自分のパーティ -->
+                <div class="party">
+                    <h3>👤 自分のパーティ</h3>
+                    <div id="myParty" class="party-slots"></div>
+                </div>
+                
+                <!-- 相手のパーティ -->
+                <div class="party">
+                    <h3>🎯 相手のパーティ</h3>
+                    <div id="enemyParty" class="party-slots"></div>
+                </div>
+            </div>
+            
+            <button id="analyzeBtn">パーティを分析</button>
+        </section>
+
+        <!-- 分析結果 -->
+        <section class="section">
+            <div id="analysisResult" class="result"></div>
+        </section>
+    </div>
+
+    <script src="typeChart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

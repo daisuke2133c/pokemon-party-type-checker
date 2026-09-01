@@ -1,0 +1,243 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+}
+
+p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.parties-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.party {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #667eea;
+}
+
+.party h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.party-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pokemon-slot {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+}
+
+.pokemon-slot input {
+    flex: 1;
+    padding: 8px;
+    border: 2px solid #667eea;
+    border-radius: 6px;
+    font-size: 0.95em;
+}
+
+.pokemon-slot input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+}
+
+.pokemon-slot input::placeholder {
+    color: #999;
+}
+
+.types {
+    display: flex;
+    gap: 6px;
+    min-width: 120px;
+}
+
+.type-badge {
+    padding: 6px 10px;
+    background: #667eea;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.85em;
+    text-align: center;
+    min-width: 50px;
+    white-space: nowrap;
+}
+
+.type-badge.empty {
+    background: #ddd;
+    color: #999;
+}
+
+button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.result {
+    background: #f8f9fa;
+    border-left: 5px solid #667eea;
+    padding: 25px;
+    border-radius: 8px;
+    display: none;
+}
+
+.result.show {
+    display: block;
+}
+
+.result-title {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.result-section {
+    margin-bottom: 25px;
+}
+
+.result-section h4 {
+    color: #667eea;
+    margin-bottom: 12px;
+    font-size: 1.1em;
+}
+
+.result-content {
+    color: #555;
+    line-height: 1.8;
+}
+
+.type-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.type-result-badge {
+    padding: 8px 12px;
+    background: white;
+    border: 2px solid #667eea;
+    color: #667eea;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+.type-result-badge.consistent {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.type-result-badge.weak {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.warning {
+    color: #dc3545;
+    font-weight: bold;
+    padding: 15px;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+.success {
+    color: #155724;
+    font-weight: bold;
+    padding: 15px;
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+    .parties-container {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    h2 {
+        font-size: 1.4em;
+    }
+}
