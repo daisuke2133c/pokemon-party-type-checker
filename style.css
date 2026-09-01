@@ -81,21 +81,20 @@ p {
     border: 2px solid #ddd;
 }
 
-.pokemon-slot input {
+.pokemon-dropdown {
     flex: 1;
     padding: 8px;
     border: 2px solid #667eea;
     border-radius: 6px;
     font-size: 0.95em;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    background-color: white;
 }
 
-.pokemon-slot input:focus {
+.pokemon-dropdown:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
-}
-
-.pokemon-slot input::placeholder {
-    color: #999;
 }
 
 .types {

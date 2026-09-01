@@ -29,39 +29,82 @@ function initializePartySlots() {
     console.log('パーティスロット作成完了');
 }
 
-// ポケモンスロットを作成（タイプ入力式）
+// ポケモンスロットを作成（プルダウン式）
 function createPokemonSlot(id) {
     const div = document.createElement('div');
     div.className = 'pokemon-slot';
     
-    // ポケモン名入力欄
-    const nameInput = document.createElement('input');
-    nameInput.type = 'text';
-    nameInput.id = id + '-name';
-    nameInput.placeholder = 'ポケモン名';
-    nameInput.style.flex = '1';
+    // ポケモン名プルダウン
+    const pokemonSelect = document.createElement('select');
+    pokemonSelect.id = id + '-pokemon';
+    pokemonSelect.className = 'pokemon-dropdown';
     
-    // タイプ1入力欄
-    const type1Input = document.createElement('input');
-    type1Input.type = 'text';
-    type1Input.id = id + '-type1';
-    type1Input.placeholder = 'タイプ1';
-    type1Input.style.width = '80px';
-    type1Input.style.fontSize = '0.9em';
+    // 空の選択肢
+    const emptyOption = document.createElement('option');
+    emptyOption.value = '';
+    emptyOption.textContent = 'ポケモンを選択';
+    pokemonSelect.appendChild(emptyOption);
     
-    // タイプ2入力欄
-    const type2Input = document.createElement('input');
-    type2Input.type = 'text';
-    type2Input.id = id + '-type2';
-    type2Input.placeholder = 'タイプ2';
-    type2Input.style.width = '80px';
-    type2Input.style.fontSize = '0.9em';
+    // ポケモンリストを追加
+    pokemonList.forEach(pokemon => {
+        const option = document.createElement('option');
+        option.value = pokemon;
+        option.textContent = pokemon;
+        pokemonSelect.appendChild(option);
+    });
     
-    div.appendChild(nameInput);
-    div.appendChild(type1Input);
-    div.appendChild(type2Input);
+    // ポケモン選択時にタイプを自動表示
+    pokemonSelect.addEventListener('change', function() {
+        updatePokemonTypes(id);
+    });
+    
+    // タイプ表示欄
+    const typesDiv = document.createElement('div');
+    typesDiv.className = 'types';
+    typesDiv.id = id + '-types';
+    
+    // 初期表示：空
+    const emptyBadge = document.createElement('span');
+    emptyBadge.className = 'type-badge empty';
+    emptyBadge.textContent = '---';
+    typesDiv.appendChild(emptyBadge);
+    
+    div.appendChild(pokemonSelect);
+    div.appendChild(typesDiv);
     
     return div;
+}
+
+// ポケモン選択時にタイプを更新
+function updatePokemonTypes(id) {
+    const pokemonSelect = document.getElementById(id + '-pokemon');
+    const pokemonName = pokemonSelect.value;
+    const typesDiv = document.getElementById(id + '-types');
+    
+    console.log(`ポケモン選択: ${id} = "${pokemonName}"`);
+    
+    // タイプバッジをクリア
+    typesDiv.innerHTML = '';
+    
+    if (pokemonName && pokemonDatabase[pokemonName]) {
+        const pokemonInfo = pokemonDatabase[pokemonName];
+        const types = pokemonInfo.types;
+        
+        console.log(`タイプ: ${pokemonName} -> ${types.join(', ')}`);
+        
+        types.forEach(type => {
+            const badge = document.createElement('span');
+            badge.className = 'type-badge';
+            badge.textContent = getTypeNameJP(type);
+            typesDiv.appendChild(badge);
+        });
+    } else {
+        // ポケモンが選択されていない場合は空のバッジを表示
+        const emptyBadge = document.createElement('span');
+        emptyBadge.className = 'type-badge empty';
+        emptyBadge.textContent = '---';
+        typesDiv.appendChild(emptyBadge);
+    }
 }
 
 // パーティを分析
@@ -76,7 +119,7 @@ function analyzeParty() {
     
     // 入力チェック
     if (myParty.length === 0 || enemyParty.length === 0) {
-        showResult('<div class="warning">⚠️ 自分と相手の両方に最低1匹以上ポケモン（タイプ）を入力してください</div>');
+        showResult('<div class="warning">⚠️ 自分と相手の両方に最低1匹以上ポケモンを選択してください</div>');
         return;
     }
     
@@ -92,19 +135,13 @@ function getPartyData(prefix) {
     const party = [];
     
     for (let i = 0; i < 6; i++) {
-        const name = document.getElementById(`${prefix}${i}-name`).value.trim();
-        const type1 = document.getElementById(`${prefix}${i}-type1`).value.trim().toLowerCase();
-        const type2 = document.getElementById(`${prefix}${i}-type2`).value.trim().toLowerCase();
+        const pokemonName = document.getElementById(`${prefix}${i}-pokemon`).value.trim();
         
-        if (type1) {
-            const types = [type1];
-            if (type2 && type2 !== type1) {
-                types.push(type2);
-            }
-            
+        if (pokemonName && pokemonDatabase[pokemonName]) {
+            const pokemonInfo = pokemonDatabase[pokemonName];
             party.push({
-                name: name || `ポケモン${i + 1}`,
-                types: types
+                name: pokemonName,
+                types: pokemonInfo.types
             });
         }
     }
