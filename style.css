@@ -81,6 +81,16 @@ p {
     border: 2px solid #ddd;
 }
 
+.pokemon-slot.disabled {
+    opacity: 0.6;
+}
+
+.pokemon-slot input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
 .pokemon-dropdown {
     flex: 1;
     padding: 8px;
@@ -178,33 +188,60 @@ button:active {
     line-height: 1.8;
 }
 
-.type-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
+.type-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
 }
 
-.type-result-badge {
-    padding: 8px 12px;
-    background: white;
-    border: 2px solid #667eea;
-    color: #667eea;
-    border-radius: 6px;
+.type-table th,
+.type-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.type-table th {
+    background: #667eea;
+    color: white;
     font-weight: bold;
-    font-size: 0.95em;
 }
 
-.type-result-badge.consistent {
+.type-table tr:hover {
+    background: #f5f5f5;
+}
+
+.type-table tr.consistent {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+}
+
+.type-table .type-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.type-table .super-effective {
+    color: #dc3545;
+}
+
+.type-table .resistance {
+    color: #28a745;
+}
+
+.type-badge-small {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #667eea;
+    color: white;
+    border-radius: 3px;
+    font-size: 0.8em;
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+.type-badge-small.consistent {
     background: #28a745;
-    color: white;
-    border-color: #28a745;
-}
-
-.type-result-badge.weak {
-    background: #dc3545;
-    color: white;
-    border-color: #dc3545;
 }
 
 .warning {
@@ -238,5 +275,14 @@ button:active {
     
     h2 {
         font-size: 1.4em;
+    }
+    
+    .type-table {
+        font-size: 0.9em;
+    }
+    
+    .type-table th,
+    .type-table td {
+        padding: 8px;
     }
 }

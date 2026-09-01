@@ -79,8 +79,8 @@ const typeChart = {
         noEffect: ['dark']
     },
     
-    // バグタイプの攻撃
-    bug: {
+    // むしタイプの攻撃
+    insect: {
         superEffective: ['grass', 'psychic', 'dark'],
         notVeryEffective: ['fire', 'fighting', 'poison', 'flying', 'ghost', 'steel', 'fairy'],
         noEffect: []
@@ -88,7 +88,7 @@ const typeChart = {
     
     // 岩タイプの攻撃
     rock: {
-        superEffective: ['fire', 'ice', 'flying', 'bug'],
+        superEffective: ['fire', 'ice', 'flying', 'insect'],
         notVeryEffective: ['fighting', 'ground', 'steel'],
         noEffect: []
     },
@@ -186,7 +186,7 @@ const typeNameMap = {
     'ground': '地面',
     'flying': '飛行',
     'psychic': 'エスパー',
-    'bug': 'バグ',
+    'insect': 'むし',
     'rock': '岩',
     'ghost': 'ゴースト',
     'dragon': 'ドラゴン',
