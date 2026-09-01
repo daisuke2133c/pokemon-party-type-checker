@@ -386,40 +386,36 @@ function displayAnalysisResult(myAnalysis, myParty, enemyAnalysis, enemyParty) {
 }
 
 // タイプ弱点テーブルを表示
-function displayTypeWeaknessTable(analysis) {
-    const container = document.getElementById('type-weakness-table');
+function displayTypeWeaknessTable(label, analysis) {
+    let html = '<div class="result-section">';
+    html += `<h4>🛡️ ${label}のパーティの一貫タイプ</h4>`;
 
-    let html = `
-        <table>
-            <thead>
-                <tr>
-                    <th>攻撃タイプ</th>
-                    <th>一貫</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    Object.keys(analysis.typeStatus).forEach(type => {
-        // 一貫していないタイプは表示しない
-        if (!analysis.typeStatus[type].isConsistent) {
-            return;
-        }
-
-        html += `
-            <tr>
-                <td class="type-name">${getTypeNameJP(type)}</td>
-                <td>🚨 一貫</td>
-            </tr>
-        `;
+    const consistentTypes = Object.keys(analysis.typeStatus).filter(type => {
+        return analysis.typeStatus[type].isConsistent;
     });
 
-    html += `
-            </tbody>
-        </table>
-    `;
+    if (consistentTypes.length === 0) {
+        html += '<div class="success">✅ 一貫しているタイプはありません</div>';
+    } else {
+        html += '<table class="type-table">';
+        html += '<thead><tr>';
+        html += '<th>攻撃タイプ</th>';
+        html += '</tr></thead>';
+        html += '<tbody>';
 
-    container.innerHTML = html;
+        consistentTypes.forEach(type => {
+            html += '<tr>';
+            html += `<td class="type-name">${getTypeNameJP(type)}</td>`;
+            html += '</tr>';
+        });
+
+        html += '</tbody>';
+        html += '</table>';
+    }
+
+    html += '</div>';
+
+    return html;
 }
 
 // 結果を表示する
