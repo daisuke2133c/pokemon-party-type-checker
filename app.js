@@ -250,59 +250,104 @@ function getPartyData(prefix) {
 // 自分のパーティの弱点の一貫性を分析
 function analyzeOwnPartyWeakness(party) {
     const analysis = {
-        typeWeakness: {},     // 各タイプが弱点とする攻撃タイプ
-        typeStatus: {}        // 各タイプが対応できているか
+        typeWeakness: {},
+        typeStatus: {}
     };
-    
-    // パーティの全防御タイプを集める
-    const defTypes = new Set();
+
+    // パーティの「実際のポケモン」ごとに弱点を調べる
     party.forEach(pokemon => {
-        pokemon.types.forEach(type => {
-            if (typeChart[type]) {
-                defTypes.add(type);
+        pokemon.types.forEach(defType => {
+            if (!analysis.typeWeakness[defType]) {
+                analysis.typeWeakness[defType] = {
+                    type: defType,
+                    weakness: []
+                };
             }
         });
     });
-    
-    // 各防御タイプの弱点を記録
-    defTypes.forEach(defType => {
-        const def = defenseChart[defType];
-        if (!def) return;
-        
-        analysis.typeWeakness[defType] = {
-            type: defType,
-            weakness: def.weakness  // このタイプが弱点とする攻撃タイプ
-        };
-    });
-    
-    // 各弱点タイプについて、パーティで対応できているか確認
-    const allWeaknesses = new Set();
-    Object.values(analysis.typeWeakness).forEach(typeInfo => {
-        typeInfo.weakness.forEach(weakType => {
-            allWeaknesses.add(weakType);
-        });
-    });
-    
-    allWeaknesses.forEach(attackType => {
+
+    // 全18タイプの攻撃について調べる
+    Object.keys(typeChart).forEach(attackType => {
+
+        // この攻撃タイプに対して、
+        // パーティ内に「0.5倍以下」で受けられるポケモンがいるか
         const canResist = party.some(pokemon => {
-            return pokemon.types.some(defType => {
-                const def = defenseChart[defType];
-                if (!def) return false;
-                
-                // 無効 > 耐性 > 等倍
-                if (def.immunity.includes(attackType)) return true;
-                if (def.resistance.includes(attackType)) return true;
-                return false;
-            });
+            const multiplier = getTypeMultiplier(
+                attackType,
+                pokemon.types
+            );
+
+            return multiplier <= 0.5;
         });
-        
+
+        // パーティ内に「2倍以上」で受けるポケモンがいるか
+        const hasWeakness = party.some(pokemon => {
+            const multiplier = getTypeMultiplier(
+                attackType,
+                pokemon.types
+            );
+
+            return multiplier >= 2;
+        });
+
         analysis.typeStatus[attackType] = {
             type: attackType,
-            isConsistent: !canResist  // 対応できなければ一貫している
+            isConsistent: hasWeakness && !canResist
         };
     });
-    
+
+    // タイプごとの弱点を作成
+    Object.keys(typeChart).forEach(defType => {
+        const weakness = [];
+
+        Object.keys(typeChart).forEach(attackType => {
+            const multiplier = getTypeMultiplier(
+                attackType,
+                [defType]
+            );
+
+            if (multiplier >= 2) {
+                weakness.push(attackType);
+            }
+        });
+
+        if (weakness.length > 0) {
+            analysis.typeWeakness[defType] = {
+                type: defType,
+                weakness: weakness
+            };
+        }
+    });
+
     return analysis;
+}
+
+
+// 攻撃タイプ → 防御側の複合タイプの最終倍率を計算
+function getTypeMultiplier(attackType, defenseTypes) {
+    let multiplier = 1;
+
+    defenseTypes.forEach(defenseType => {
+
+        const attackData = typeChart[attackType];
+
+        if (!attackData) return;
+
+        // 無効
+        if (attackData.noEffect.includes(defenseType)) {
+            multiplier *= 0;
+        }
+        // 半減
+        else if (attackData.notVeryEffective.includes(defenseType)) {
+            multiplier *= 0.5;
+        }
+        // 弱点
+        else if (attackData.superEffective.includes(defenseType)) {
+            multiplier *= 2;
+        }
+    });
+
+    return multiplier;
 }
 
 // 分析結果を表示
