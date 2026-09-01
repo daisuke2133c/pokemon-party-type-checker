@@ -27,7 +27,7 @@ const typeChart = {
     electric: {
         superEffective: ['water', 'flying'],
         notVeryEffective: ['electric', 'grass', 'dragon'],
-        noEffect: [ground]
+        noEffect: ['ground']
     },
     
     // 草タイプの攻撃
@@ -104,7 +104,7 @@ const typeChart = {
     dragon: {
         superEffective: ['dragon'],
         notVeryEffective: ['steel'],
-        noEffect: [fairy]
+        noEffect: ['fairy']
     },
     
     // 悪タイプの攻撃
