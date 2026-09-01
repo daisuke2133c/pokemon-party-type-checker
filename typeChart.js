@@ -176,23 +176,23 @@ function generateDefenseChart() {
 // タイプの日本語表記
 const typeNameMap = {
     'normal': 'ノーマル',
-    'fire': '炎',
-    'water': '水',
-    'electric': '電気',
-    'grass': '草',
-    'ice': '氷',
-    'fighting': '格闘',
-    'poison': '毒',
-    'ground': '地面',
-    'flying': '飛行',
+    'fire': 'ほのお',
+    'water': 'みず',
+    'electric': 'でんき',
+    'grass': 'くさ',
+    'ice': 'こおり',
+    'fighting': 'かくとう',
+    'poison': 'どく',
+    'ground': 'じめん',
+    'flying': 'ひこう',
     'psychic': 'エスパー',
     'insect': 'むし',
-    'rock': '岩',
+    'rock': 'いわ',
     'ghost': 'ゴースト',
     'dragon': 'ドラゴン',
-    'dark': '悪',
-    'steel': '鋼',
-    'fairy': '妖精'
+    'dark': 'あく',
+    'steel': 'はがね',
+    'fairy': 'フェアリー'
 };
 
 // タイプの英語から日本語に変換
