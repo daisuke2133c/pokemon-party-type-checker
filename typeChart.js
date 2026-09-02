@@ -11,7 +11,7 @@ const typeChart = {
     
     // 炎タイプの攻撃
     fire: {
-        superEffective: ['grass', 'ice', 'bug', 'steel'],
+        superEffective: ['grass', 'ice', 'insect', 'steel'],
         notVeryEffective: ['fire', 'water', 'rock', 'dragon'],
         noEffect: []
     },
@@ -33,7 +33,7 @@ const typeChart = {
     // 草タイプの攻撃
     grass: {
         superEffective: ['water', 'ground', 'rock'],
-        notVeryEffective: ['fire', 'grass', 'poison', 'flying', 'bug', 'dragon'],
+        notVeryEffective: ['fire', 'grass', 'poison', 'flying', 'insect', 'dragon'],
         noEffect: []
     },
     
@@ -47,7 +47,7 @@ const typeChart = {
     // 格闘タイプの攻撃
     fighting: {
         superEffective: ['normal', 'ice', 'rock', 'dark', 'steel'],
-        notVeryEffective: ['flying', 'poison', 'bug', 'psychic', 'fairy'],
+        notVeryEffective: ['flying', 'poison', 'insect', 'psychic', 'fairy'],
         noEffect: ['ghost']
     },
     
@@ -61,13 +61,13 @@ const typeChart = {
     // 地面タイプの攻撃
     ground: {
         superEffective: ['fire', 'electric', 'poison', 'rock', 'steel'],
-        notVeryEffective: ['grass', 'bug'],
+        notVeryEffective: ['grass', 'insect'],
         noEffect: ['flying']
     },
     
     // 飛行タイプの攻撃
     flying: {
-        superEffective: ['fighting', 'bug', 'grass'],
+        superEffective: ['fighting', 'insect', 'grass'],
         notVeryEffective: ['electric', 'rock', 'steel'],
         noEffect: []
     },
