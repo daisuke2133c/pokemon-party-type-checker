@@ -30,23 +30,23 @@
 
 使用できるタイプ名（英語小文字）：
 - normal（ノーマル）
-- fire（炎）
-- water（水）
-- electric（電気）
-- grass（草）
-- ice（氷）
-- fighting（格闘）
-- poison（毒）
-- ground（地面）
-- flying（飛行）
+- fire（ほのお）
+- water（みず）
+- electric（でんき）
+- grass（くさ）
+- ice（こおり）
+- fighting（かくとう）
+- poison（どく）
+- ground（じめん）
+- flying（ひこう）
 - psychic（エスパー）
-- bug（バグ）
-- rock（岩）
+- insect（むし）
+- rock（いわ）
 - ghost（ゴースト）
 - dragon（ドラゴン）
-- dark（悪）
-- steel（鋼）
-- fairy（妖精）
+- dark（あく）
+- steel（はがね）
+- fairy（フェアリー）
 
 ## 例
 
@@ -69,7 +69,7 @@
 
 ### 分析結果例
 **相手の一貫タイプ：** なし（全てのタイプに対応可能）
-**自分の弱点：** 水、電気、岩 など
+**自分の弱点：** みず、でんき、いわ など
 
 ## ファイル構成
 
