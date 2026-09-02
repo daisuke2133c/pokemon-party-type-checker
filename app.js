@@ -296,7 +296,7 @@ function getPartyData(prefix) {
     
     for (let i = 0; i < 6; i++) {
         const checkbox = document.getElementById(`${prefix}${i}-check`);
-        const pokemonName = document.getElementById(`${prefix}${i}-pokemon`).value.trim();
+        const pokemonName = document.getElementById(`${prefix}${i}-pokemon-search`).value.trim();
         const type1 = document.getElementById(`${prefix}${i}-type1-search`).dataset.type || '';
         const type2 = document.getElementById(`${prefix}${i}-type2-search`).dataset.type || '';
         
