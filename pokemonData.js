@@ -16,7 +16,7 @@ const pokemonDatabase = {
     'アーマーガア': { jp: 'アーマーガア', types: ['flying', 'steel'] },
     'サザンドラ': { jp: 'サザンドラ', types: ['dark', 'dragon'] },
     'ライチュウ': { jp: 'ライチュウ', types: ['electric'] },
-        'キラフロル': { jp: 'キラフロル', types: ['rock', 'poison'] },
+    'キラフロル': { jp: 'キラフロル', types: ['rock', 'poison'] },
     'ゲンガー': { jp: 'ゲンガー', types: ['ghost', 'poison'] },
     'ゲッコウガ': { jp: 'ゲッコウガ', types: ['water', 'dark'] },
     'ウルガモス': { jp: 'ウルガモス', types: ['bug', 'fire'] },
