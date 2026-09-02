@@ -47,26 +47,26 @@ function createPokemonSlot(id) {
         }
     });
     
-    // ポケモン名プルダウン
-    const pokemonSelect = document.createElement('select');
-    pokemonSelect.id = id + '-pokemon';
-    pokemonSelect.className = 'pokemon-dropdown';
-    
-    const emptyOption = document.createElement('option');
-    emptyOption.value = '';
-    emptyOption.textContent = 'ポケモンを選択';
-    pokemonSelect.appendChild(emptyOption);
-    
-    pokemonList.forEach(pokemon => {
-        const option = document.createElement('option');
-        option.value = pokemon;
-        option.textContent = pokemon;
-        pokemonSelect.appendChild(option);
-    });
-    
-    pokemonSelect.addEventListener('change', function() {
-        updatePokemonTypes(id);
-    });
+    // ポケモン名プルダウン（検索可能）
+    const pokemonContainer = document.createElement('div');
+    pokemonContainer.className = 'type-input-container';
+    pokemonContainer.id = id + '-pokemon-container';
+
+    const pokemonInput = document.createElement('input');
+    pokemonInput.type = 'text';
+    pokemonInput.id = id + '-pokemon-search';
+    pokemonInput.className = 'type-search-input';
+    pokemonInput.placeholder = 'ポケモンを選択';
+    pokemonInput.autocomplete = 'off';
+
+    const pokemonDropdown = document.createElement('div');
+    pokemonDropdown.className = 'type-dropdown-list';
+    pokemonDropdown.id = id + '-pokemon-dropdown';
+
+    createPokemonDropdown(pokemonInput, pokemonDropdown, id);
+
+    pokemonContainer.appendChild(pokemonInput);
+    pokemonContainer.appendChild(pokemonDropdown);
     
     // タイプ1プルダウン（検索可能）
     const type1Container = document.createElement('div');
@@ -111,7 +111,7 @@ function createPokemonSlot(id) {
     type2Container.appendChild(type2Dropdown);
     
     div.appendChild(checkbox);
-    div.appendChild(pokemonSelect);
+    div.appendChild(pokemonContainer);
     div.appendChild(type1Container);
     div.appendChild(type2Container);
     
@@ -134,6 +134,84 @@ function createTypeDropdown(input, dropdown, dataId) {
             dropdown.style.display = 'none';
         }, 200);
     });
+}
+// ポケモンドロップダウンを作成
+function createPokemonDropdown(input, dropdown, id) {
+    input.addEventListener('focus', function() {
+        showPokemonDropdown(dropdown, input.value);
+        dropdown.style.display = 'block';
+    });
+
+    input.addEventListener('input', function() {
+        showPokemonDropdown(dropdown, input.value);
+    });
+
+    input.addEventListener('blur', function() {
+        setTimeout(() => {
+            dropdown.style.display = 'none';
+        }, 200);
+    });
+}
+
+// ポケモンドロップダウンを表示
+function showPokemonDropdown(dropdown, searchText) {
+    dropdown.innerHTML = '';
+
+    const searchHiragana = toHiragana(searchText.toLowerCase());
+
+    pokemonList.forEach(pokemon => {
+        const pokemonHiragana = toHiragana(pokemon.toLowerCase());
+
+        if (
+            pokemonHiragana.includes(searchHiragana) ||
+            pokemon.includes(searchText)
+        ) {
+            const item = document.createElement('div');
+            item.className = 'type-dropdown-item';
+            item.textContent = pokemon;
+
+            item.addEventListener('mousedown', function() {
+                const input = dropdown.previousElementSibling;
+
+                input.value = pokemon;
+                input.dataset.pokemon = pokemon;
+
+                dropdown.style.display = 'none';
+
+                updatePokemonTypesFromSearch(
+                    input.id.replace('-pokemon-search', ''),
+                    pokemon
+                );
+            });
+
+            dropdown.appendChild(item);
+        }
+    });
+}
+
+// 検索からポケモンを選択したときにタイプを更新
+function updatePokemonTypesFromSearch(id, pokemonName) {
+    if (pokemonName && pokemonDatabase[pokemonName]) {
+        const pokemonInfo = pokemonDatabase[pokemonName];
+        const types = pokemonInfo.types;
+
+        const type1Input =
+            document.getElementById(id + '-type1-search');
+
+        type1Input.value = getTypeNameJP(types[0]);
+        type1Input.dataset.type = types[0];
+
+        const type2Input =
+            document.getElementById(id + '-type2-search');
+
+        if (types[1]) {
+            type2Input.value = getTypeNameJP(types[1]);
+            type2Input.dataset.type = types[1];
+        } else {
+            type2Input.value = '';
+            type2Input.dataset.type = '';
+        }
+    }
 }
 
 // タイプドロップダウンを表示
@@ -165,7 +243,7 @@ function showTypeDropdown(dropdown, searchText) {
 
 // ポケモン選択時にタイプを更新
 function updatePokemonTypes(id) {
-    const pokemonName = document.getElementById(id + '-pokemon').value;
+    const pokemonName = document.getElementById(`${prefix}${i}-pokemon-search`).value.trim();
     
     if (pokemonName && pokemonDatabase[pokemonName]) {
         const pokemonInfo = pokemonDatabase[pokemonName];
