@@ -6,7 +6,7 @@ const pokemonDatabase = {
     'ブリジュラス': { jp: 'ブリジュラス', types: ['steel', 'dragon'] },
     'ミミッキュ': { jp: 'ミミッキュ', types: ['ghost', 'fairy'] },
     'カバルドン': { jp: 'カバルドン', types: ['ground'] },
-    'ハッサム': { jp: 'ハッサム', types: ['steel','incect'] }
+    'ハッサム': { jp: 'ハッサム', types: ['steel','insect'] }
 };
 
 // ポケモンリスト
