@@ -49,7 +49,7 @@ function createPokemonSlot(id) {
     
     // ポケモン名プルダウン（検索可能）
     const pokemonContainer = document.createElement('div');
-    pokemonContainer.className = 'type-input-container';
+    pokemonContainer.className = 'type-input-container pokemon-input-container';
     pokemonContainer.id = id + '-pokemon-container';
 
     const pokemonInput = document.createElement('input');
