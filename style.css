@@ -108,13 +108,12 @@ p {
     outline: none;
     box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
 }
-.pokemon-input-container {
-    flex: 0 0 220px;
-}
-
 .type-input-container {
     position: relative;
     flex: 0 0 120px;
+}
+.pokemon-input-container {
+    flex: 0 0 220px;
 }
 
 .type-search-input {
