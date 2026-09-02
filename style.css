@@ -108,6 +108,9 @@ p {
     outline: none;
     box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
 }
+.pokemon-input-container {
+    flex: 0 0 180px;
+}
 
 .type-input-container {
     position: relative;
