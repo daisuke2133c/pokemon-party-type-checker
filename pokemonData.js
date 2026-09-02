@@ -5,7 +5,8 @@ const pokemonDatabase = {
     'マスカーニャ': { jp: 'マスカーニャ', types: ['grass', 'dark'] },
     'ブリジュラス': { jp: 'ブリジュラス', types: ['steel', 'dragon'] },
     'ミミッキュ': { jp: 'ミミッキュ', types: ['ghost', 'fairy'] },
-    'カバルドン': { jp: 'カバルドン', types: ['ground'] }
+    'カバルドン': { jp: 'カバルドン', types: ['ground'] },
+    'ハッサム': { jp: 'ハッサム', types: ['steel','incect'] }
 };
 
 // ポケモンリスト
