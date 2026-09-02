@@ -495,7 +495,7 @@ function displayTypeWeaknessTable(label, analysis) {
             html += `<td class="type-name">${getTypeNameJP(type)}</td>`;
 
             if (status === 'neutral') {
-                html += '<td>🟠 等倍一貫</td>';
+                html += '<td>   等倍一貫</td>';
             } else {
                 html += '<td>⚠️ 弱点一貫</td>';
             }
