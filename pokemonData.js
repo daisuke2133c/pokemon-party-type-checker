@@ -15,7 +15,31 @@ const pokemonDatabase = {
     'イダイトウ（オス）': { jp: 'イダイトウ（オス）', types: ['water', 'ghost'] },
     'アーマーガア': { jp: 'アーマーガア', types: ['flying', 'steel'] },
     'サザンドラ': { jp: 'サザンドラ', types: ['dark', 'dragon'] },
-    'ライチュウ': { jp: 'ライチュウ', types: ['electric'] }
+    'ライチュウ': { jp: 'ライチュウ', types: ['electric'] },
+        'キラフロル': { jp: 'キラフロル', types: ['rock', 'poison'] },
+    'ゲンガー': { jp: 'ゲンガー', types: ['ghost', 'poison'] },
+    'ゲッコウガ': { jp: 'ゲッコウガ', types: ['water', 'dark'] },
+    'ウルガモス': { jp: 'ウルガモス', types: ['bug', 'fire'] },
+    'ドドゲザン': { jp: 'ドドゲザン', types: ['dark', 'steel'] },
+    'バシャーモ': { jp: 'バシャーモ', types: ['fire', 'fighting'] },
+    'サーフゴー': { jp: 'サーフゴー', types: ['steel', 'ghost'] },
+    'ギルガルド': { jp: 'ギルガルド', types: ['steel', 'ghost'] },
+    'ダイケンキ（ヒスイ）': { jp: 'ダイケンキ（ヒスイ）', types: ['water', 'dark'] },
+    'ブラッキー': { jp: 'ブラッキー', types: ['dark'] },
+    'ニンフィア': { jp: 'ニンフィア', types: ['fairy'] },
+    'ムクホーク': { jp: 'ムクホーク', types: ['normal', 'flying'] },
+    'ルカリオ': { jp: 'ルカリオ', types: ['fighting', 'steel'] },
+    'ウォッシュロトム': { jp: 'ウォッシュロトム', types: ['electric', 'water'] },
+    'ミミロップ': { jp: 'ミミロップ', types: ['normal'] },
+    'フシギバナ': { jp: 'フシギバナ', types: ['grass', 'poison'] },
+    'キュウコン（アローラ）': { jp: 'キュウコン（アローラ）', types: ['ice', 'fairy'] },
+    'ラウドボーン': { jp: 'ラウドボーン', types: ['fire', 'ghost'] },
+    'スターミー': { jp: 'スターミー', types: ['water', 'psychic'] },
+    'ハラバリー': { jp: 'ハラバリー', types: ['electric'] },
+    'ドヒドイデ': { jp: 'ドヒドイデ', types: ['poison', 'water'] },
+    'ドラパルト': { jp: 'ドラパルト', types: ['dragon', 'ghost'] },
+    'ラグラージ': { jp: 'ラグラージ', types: ['water', 'ground'] },
+    'スコヴィラン': { jp: 'スコヴィラン', types: ['grass', 'fire'] }
 };
 
 // ポケモンリスト
