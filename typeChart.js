@@ -124,7 +124,7 @@ const typeChart = {
     // 妖精タイプの攻撃
     fairy: {
         superEffective: ['fighting', 'dragon', 'dark'],
-        notVeryEffective: ['poison', 'steel'],
+        notVeryEffective: ['poison', 'steel','fire'],
         noEffect: []
     }
 };
