@@ -6,7 +6,16 @@ const pokemonDatabase = {
     'ブリジュラス': { jp: 'ブリジュラス', types: ['steel', 'dragon'] },
     'ミミッキュ': { jp: 'ミミッキュ', types: ['ghost', 'fairy'] },
     'カバルドン': { jp: 'カバルドン', types: ['ground'] },
-    'ハッサム': { jp: 'ハッサム', types: ['steel','insect'] }
+    'ハッサム': { jp: 'ハッサム', types: ['steel','insect'] },
+    'ギャラドス': { jp: 'ギャラドス', types: ['water', 'flying'] },
+    'マフォクシー': { jp: 'マフォクシー', types: ['fire', 'psychic'] },
+    'カイリュー': { jp: 'カイリュー', types: ['dragon', 'flying'] },
+    'メタグロス': { jp: 'メタグロス', types: ['steel', 'psychic'] },
+    'リザードン': { jp: 'リザードン', types: ['fire', 'flying'] },
+    'イダイトウ（オス）': { jp: 'イダイトウ（オス）', types: ['water', 'ghost'] },
+    'アーマーガア': { jp: 'アーマーガア', types: ['flying', 'steel'] },
+    'サザンドラ': { jp: 'サザンドラ', types: ['dark', 'dragon'] },
+    'ライチュウ': { jp: 'ライチュウ', types: ['electric'] }
 };
 
 // ポケモンリスト
