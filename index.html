@@ -6,39 +6,133 @@
     <title>ポケモンチャンピオンズ タイプ補完チェッカー</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>🔥ポケモンチャンピオンズ⚡</h1>
-        <h2>タイプ補完チェッカー</h2>
-        
-        <section class="section">
-            <p>自分と相手のパーティのポケモンとタイプを入力して、パーティ全体の弱点と一貫性を分析できます。</p>
-            
-            <div class="parties-container">
-                <!-- 自分のパーティ -->
-                <div class="party">
-                    <h3>👤 自分のパーティ</h3>
-                    <div id="myParty" class="party-slots"></div>
-                </div>
-                
-                <!-- 相手のパーティ -->
-                <div class="party">
-                    <h3>🎯 相手のパーティ</h3>
-                    <div id="enemyParty" class="party-slots"></div>
-                </div>
-            </div>
-            
-            <button id="analyzeBtn">パーティを分析</button>
-        </section>
 
-        <!-- 分析結果 -->
-        <section class="section">
-            <div id="analysisResult" class="result"></div>
-        </section>
+<body>
+
+<div class="container">
+
+    <h1>🔥ポケモンチャンピオンズ⚡</h1>
+    <h2>タイプ補完チェッカー</h2>
+
+    <!-- ページ切り替え -->
+    <div class="page-tabs">
+        <button id="partyPageBtn" class="page-tab active">
+            🛡️ パーティ分析
+        </button>
+
+        <button id="attackPageBtn" class="page-tab">
+            ⚔️ 攻撃タイプ補完
+        </button>
     </div>
 
-    <script src="typeChart.js"></script>
-    <script src="pokemonData.js"></script>
-    <script src="app.js"></script>
+
+    <!-- ============================= -->
+    <!-- パーティ分析ページ -->
+    <!-- ============================= -->
+
+    <div id="partyPage">
+
+        <section class="section">
+
+            <p>
+                自分と相手のパーティのポケモンとタイプを入力して、
+                パーティ全体の弱点と一貫性を分析できます。
+            </p>
+
+            <div class="parties-container">
+
+                <!-- 自分のパーティ -->
+                <div class="party">
+
+                    <h3>👤 自分のパーティ</h3>
+
+                    <div id="myParty" class="party-slots"></div>
+
+                </div>
+
+
+                <!-- 相手のパーティ -->
+                <div class="party">
+
+                    <h3>🎯 相手のパーティ</h3>
+
+                    <div id="enemyParty" class="party-slots"></div>
+
+                </div>
+
+            </div>
+
+            <button id="analyzeBtn">
+                パーティを分析
+            </button>
+
+        </section>
+
+
+        <!-- 分析結果 -->
+
+        <section class="section">
+
+            <div id="analysisResult" class="result"></div>
+
+        </section>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- 攻撃タイプ補完チェッカー -->
+    <!-- ============================= -->
+
+    <div id="attackPage" style="display: none;">
+
+        <section class="section">
+
+            <h3 class="attack-title">
+                ⚔️ 攻撃タイプ補完チェッカー
+            </h3>
+
+            <p>
+                使用したい攻撃タイプにチェックを入れてください。
+                <br>
+                選択した攻撃タイプのどれでも
+                <strong>抜群（2倍以上）にならないタイプ</strong>
+                を表示します。
+            </p>
+
+
+            <!-- タイプチェックボックス -->
+
+            <div id="attackTypeChecks" class="attack-type-checks"></div>
+
+
+            <!-- 分析ボタン -->
+
+            <button id="checkAttackBtn">
+                🔍 攻撃タイプを分析
+            </button>
+
+        </section>
+
+
+        <!-- 攻撃タイプ分析結果 -->
+
+        <section class="section">
+
+            <div id="attackAnalysisResult" class="result"></div>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<!-- JavaScript -->
+
+<script src="typeChart.js"></script>
+<script src="pokemonData.js"></script>
+<script src="app.js"></script>
+
 </body>
 </html>
