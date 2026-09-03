@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
     // 攻撃タイプ補完の分析ボタン
+    document.getElementById('clearAttackBtn').addEventListener('click', clearAttackTypes);
     document.getElementById('checkAttackBtn')
         .addEventListener('click', analyzeAttackTypeComplement);
 
