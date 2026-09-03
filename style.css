@@ -34,16 +34,62 @@ h2 {
     font-size: 1.8em;
 }
 
+h3 {
+    color: #667eea;
+}
+
 p {
     text-align: center;
     color: #666;
     margin-bottom: 20px;
     font-size: 1.1em;
+    line-height: 1.7;
 }
 
 .section {
     margin-bottom: 40px;
 }
+
+
+/* ================================= */
+/* ページ切り替え */
+/* ================================= */
+
+.page-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.page-tab {
+    flex: 1;
+    background: #f0f0f0;
+    color: #555;
+    padding: 15px 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1.05em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.page-tab:hover {
+    transform: none;
+    box-shadow: none;
+    background: #e8e8e8;
+}
+
+.page-tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+}
+
+
+/* ================================= */
+/* パーティ */
+/* ================================= */
 
 .parties-container {
     display: grid;
@@ -108,10 +154,12 @@ p {
     outline: none;
     box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
 }
+
 .type-input-container {
     position: relative;
     flex: 0 0 120px;
 }
+
 .pokemon-input-container {
     flex: 0 0 180px;
 }
@@ -160,6 +208,11 @@ p {
     border-bottom: none;
 }
 
+
+/* ================================= */
+/* ボタン */
+/* ================================= */
+
 button {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -181,6 +234,11 @@ button:hover {
 button:active {
     transform: translateY(0);
 }
+
+
+/* ================================= */
+/* 分析結果 */
+/* ================================= */
 
 .result {
     background: #f8f9fa;
@@ -299,25 +357,134 @@ button:active {
     margin: 10px 0;
 }
 
+
+/* ================================= */
+/* 攻撃タイプ補完チェッカー */
+/* ================================= */
+
+.attack-title {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.attack-type-checks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.attack-type-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #333;
+    font-weight: bold;
+}
+
+.attack-type-check:hover {
+    border-color: #667eea;
+    background: #f5f6ff;
+}
+
+.attack-type-check input {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.selected-attack-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.selected-attack-type {
+    padding: 7px 12px;
+    border-radius: 6px;
+    background: #667eea;
+    color: white;
+    font-weight: bold;
+}
+
+.dual-type-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.dual-type-item {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+/* ================================= */
+/* スマホ対応 */
+/* ================================= */
+
 @media (max-width: 768px) {
+
+    .container {
+        padding: 20px;
+    }
+
     .parties-container {
         grid-template-columns: 1fr;
     }
-    
+
+    .pokemon-slot {
+        flex-wrap: wrap;
+    }
+
+    .pokemon-input-container {
+        flex: 1 1 100%;
+    }
+
+    .type-input-container {
+        flex: 1;
+    }
+
     h1 {
         font-size: 2em;
     }
-    
+
     h2 {
         font-size: 1.4em;
     }
-    
+
     .type-table {
         font-size: 0.9em;
     }
-    
+
     .type-table th,
     .type-table td {
         padding: 8px;
+    }
+
+    .attack-type-checks {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dual-type-list {
+        grid-template-columns: 1fr;
+    }
+
+    .page-tabs {
+        flex-direction: column;
     }
 }
