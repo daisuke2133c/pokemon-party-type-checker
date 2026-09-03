@@ -1470,7 +1470,7 @@ function analyzeAttackTypeComplement() {
 
 
     html +=
-        `<h4>🛡️ 抜群で通らないタイプ ` +
+        `<h4>🛡️ 等倍以上で通らないタイプ ` +
         `（${notSuperEffective.length}種類）</h4>`;
 
 
@@ -1482,7 +1482,7 @@ function analyzeAttackTypeComplement() {
 
         html +=
             '<div class="success">' +
-            '✅ 抜群で通らないタイプはありません' +
+            '✅ 当倍以上で通らないタイプはありません' +
             '</div>';
 
     }
