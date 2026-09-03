@@ -1557,3 +1557,10 @@ function analyzeAttackTypeComplement() {
     });
 
 }
+// 攻撃タイプのチェックをすべて外す
+function clearAttackTypes() {
+    const checkboxes = document.querySelectorAll('#attackTypeChecks input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+    });
+}
