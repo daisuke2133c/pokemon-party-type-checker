@@ -367,6 +367,11 @@ button:active {
     font-size: 1.5em;
     margin-bottom: 20px;
 }
+.attack-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
 
 .attack-type-checks {
     display: grid;
