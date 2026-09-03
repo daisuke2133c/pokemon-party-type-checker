@@ -6,67 +6,6 @@
     <title>ポケモンチャンピオンズ タイプ補完チェッカー</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>🔥ポケモンチャンピオンズ⚡</h1>
-        <h2>タイプ補完チェッカー</h2>
-        <div class="page-tabs">
-            <button id="partyPageBtn" class="page-tab active">🛡️ パーティ分析</button>
-            <button id="attackPageBtn" class="page-tab">⚔️ 攻撃タイプ補完</button>
-        </div>
-        <div id="partyPage">
-            <section class="section">
-                <p>自分と相手のパーティのポケモンとタイプを入力して、パーティ全体の弱点と一貫性を分析できます。</p>
-                <div class="parties-container">
-                    <div class="party">
-                        <h3>👤 自分のパーティ</h3>
-                        <div id="myParty" class="party-slots"></div>
-                    </div>
-                    <div class="party">
-                        <h3>🎯 相手のパーティ</h3>
-                        <div id="enemyParty" class="party-slots"></div>
-                    </div>
-                </div>
-                <button id="analyzeBtn">パーティを分析</button>
-            </section>
-            <section class="section">
-                <div id="analysisResult" class="result"></div>
-            </section>
-        </div>
-        <div id="attackPage" style="display: none;">
-            <section class="section">
-                <h3 class="attack-title">⚔️ 攻撃タイプ補完チェッカー</h3>
-                <p>
-                    使用したい攻撃タイプにチェックを入れてください。
-                    <br>
-                    選択した攻撃タイプのどれでも
-                    <strong>抜群（2倍以上）にならないタイプ</strong>
-                    を表示します。
-                </p>
-                <div id="attackTypeChecks" class="attack-type-checks"></div>
-                <div class="attack-buttons">
-                    <button id="clearAttackBtn" class="clear-attack-btn">☑️ 全解除</button>
-                    <button id="checkAttackBtn">🔍 攻撃タイプを分析</button>
-                </div>
-            </section>
-            <section class="section">
-                <div id="attackAnalysisResult" class="result"></div>
-            </section>
-        </div>
-    </div>
-    <script src="typeChart.js"></script>
-    <script src="pokemonData.js"></script>
-    <script src="app.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ポケモンチャンピオンズ タイプ補完チェッカー</title>
-    <link rel="stylesheet" href="style.css">
-</head>
 
 <body>
 
