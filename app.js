@@ -1408,7 +1408,7 @@ function analyzeAttackTypeComplement() {
                             );
 
 
-                        return multiplier >= 2;
+                        return multiplier >= 1;
 
                     }
                 );
@@ -1482,7 +1482,7 @@ function analyzeAttackTypeComplement() {
 
         html +=
             '<div class="success">' +
-            '✅ 当倍以上で通らないタイプはありません' +
+            '✅ 等倍以上で通らないタイプはありません' +
             '</div>';
 
     }
