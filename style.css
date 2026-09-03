@@ -3,14 +3,12 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
 }
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -19,104 +17,49 @@ body {
     padding: 40px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
-
 h1 {
     text-align: center;
     color: #333;
     font-size: 2.5em;
     margin-bottom: 10px;
 }
-
 h2 {
     text-align: center;
     color: #667eea;
     margin-bottom: 30px;
     font-size: 1.8em;
 }
-
-h3 {
-    color: #667eea;
-}
-
 p {
     text-align: center;
     color: #666;
     margin-bottom: 20px;
     font-size: 1.1em;
-    line-height: 1.7;
 }
-
 .section {
     margin-bottom: 40px;
 }
-
-
-/* ================================= */
-/* ページ切り替え */
-/* ================================= */
-
-.page-tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-}
-
-.page-tab {
-    flex: 1;
-    background: #f0f0f0;
-    color: #555;
-    padding: 15px 20px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 1.05em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.page-tab:hover {
-    transform: none;
-    box-shadow: none;
-    background: #e8e8e8;
-}
-
-.page-tab.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-color: #667eea;
-}
-
-
-/* ================================= */
-/* パーティ */
-/* ================================= */
-
 .parties-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     margin-bottom: 20px;
 }
-
 .party {
     background: #f8f9fa;
     padding: 20px;
     border-radius: 10px;
     border: 2px solid #667eea;
 }
-
 .party h3 {
     color: #667eea;
     margin-bottom: 15px;
     font-size: 1.3em;
 }
-
 .party-slots {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
-
 .pokemon-slot {
     display: flex;
     gap: 10px;
@@ -126,11 +69,9 @@ p {
     border-radius: 8px;
     border: 2px solid #ddd;
 }
-
 .pokemon-slot.disabled {
     opacity: 0.6;
 }
-
 .pokemon-slot input[type="checkbox"] {
     width: 20px;
     height: 20px;
@@ -138,7 +79,6 @@ p {
     margin-top: 5px;
     flex-shrink: 0;
 }
-
 .pokemon-dropdown {
     flex: 0 0 150px;
     padding: 8px;
@@ -149,21 +89,17 @@ p {
     cursor: pointer;
     background-color: white;
 }
-
 .pokemon-dropdown:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
 }
-
 .type-input-container {
     position: relative;
     flex: 0 0 120px;
 }
-
 .pokemon-input-container {
     flex: 0 0 180px;
 }
-
 .type-search-input {
     width: 100%;
     padding: 8px;
@@ -172,12 +108,10 @@ p {
     font-size: 0.95em;
     font-family: 'Arial', sans-serif;
 }
-
 .type-search-input:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
 }
-
 .type-dropdown-list {
     position: absolute;
     top: 100%;
@@ -192,27 +126,18 @@ p {
     display: none;
     z-index: 100;
 }
-
 .type-dropdown-item {
     padding: 10px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
     transition: background 0.2s;
 }
-
 .type-dropdown-item:hover {
     background: #f0f0f0;
 }
-
 .type-dropdown-item:last-child {
     border-bottom: none;
 }
-
-
-/* ================================= */
-/* ボタン */
-/* ================================= */
-
 button {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -225,21 +150,13 @@ button {
     transition: transform 0.2s, box-shadow 0.2s;
     width: 100%;
 }
-
 button:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
 }
-
 button:active {
     transform: translateY(0);
 }
-
-
-/* ================================= */
-/* 分析結果 */
-/* ================================= */
-
 .result {
     background: #f8f9fa;
     border-left: 5px solid #667eea;
@@ -247,11 +164,9 @@ button:active {
     border-radius: 8px;
     display: none;
 }
-
 .result.show {
     display: block;
 }
-
 .result-title {
     font-weight: bold;
     color: #333;
@@ -260,67 +175,55 @@ button:active {
     border-bottom: 2px solid #667eea;
     padding-bottom: 10px;
 }
-
 .result-section {
     margin-bottom: 25px;
 }
-
 .result-section h4 {
     color: #667eea;
     margin-bottom: 12px;
     font-size: 1.1em;
 }
-
 .result-content {
     color: #555;
     line-height: 1.8;
 }
-
 .type-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
 }
-
 .type-table th,
 .type-table td {
     padding: 12px;
     text-align: left;
     border: 1px solid #ddd;
 }
-
 .type-table th {
     background: #667eea;
     color: white;
     font-weight: bold;
 }
-
 .type-table tr:hover {
     background: #f5f5f5;
 }
-
 .type-table .type-name {
     font-weight: bold;
     color: #333;
 }
-
 .type-table .consistent {
     color: #dc3545;
     font-weight: bold;
 }
-
 .type-table .resistance {
     color: #28a745;
     font-weight: bold;
 }
-
 .type-list {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 10px;
 }
-
 .type-result-badge {
     padding: 8px 12px;
     background: white;
@@ -330,13 +233,11 @@ button:active {
     font-weight: bold;
     font-size: 0.95em;
 }
-
 .type-result-badge.weak {
     background: #dc3545;
     color: white;
     border-color: #dc3545;
 }
-
 .warning {
     color: #dc3545;
     font-weight: bold;
@@ -346,7 +247,6 @@ button:active {
     border-radius: 6px;
     margin: 10px 0;
 }
-
 .success {
     color: #155724;
     font-weight: bold;
@@ -356,135 +256,109 @@ button:active {
     border-radius: 6px;
     margin: 10px 0;
 }
-
-
-/* ================================= */
-/* 攻撃タイプ補完チェッカー */
-/* ================================= */
-
-.attack-title {
-    text-align: center;
-    font-size: 1.5em;
-    margin-bottom: 20px;
-}
-
-.attack-type-checks {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.attack-type-check {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 13px;
-    background: white;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-    color: #333;
-    font-weight: bold;
-}
-
-.attack-type-check:hover {
-    border-color: #667eea;
-    background: #f5f6ff;
-}
-
-.attack-type-check input {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
-.selected-attack-types {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.selected-attack-type {
-    padding: 7px 12px;
-    border-radius: 6px;
-    background: #667eea;
-    color: white;
-    font-weight: bold;
-}
-
-.dual-type-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.dual-type-item {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background: white;
-    font-weight: bold;
-    text-align: center;
-}
-
-
-/* ================================= */
-/* スマホ対応 */
-/* ================================= */
-
 @media (max-width: 768px) {
-
-    .container {
-        padding: 20px;
-    }
-
     .parties-container {
         grid-template-columns: 1fr;
     }
-
-    .pokemon-slot {
-        flex-wrap: wrap;
-    }
-
-    .pokemon-input-container {
-        flex: 1 1 100%;
-    }
-
-    .type-input-container {
-        flex: 1;
-    }
-
     h1 {
         font-size: 2em;
     }
-
     h2 {
         font-size: 1.4em;
     }
-
     .type-table {
         font-size: 0.9em;
     }
-
     .type-table th,
     .type-table td {
         padding: 8px;
     }
-
+}
+.page-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+.page-tab {
+    background: #eee;
+    color: #555;
+}
+.page-tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+.attack-title {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+.attack-type-checks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.attack-type-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.attack-type-check input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+.attack-buttons {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+}
+.clear-attack-btn {
+    background: #777;
+}
+.clear-attack-btn:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+.selected-attack-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.selected-attack-type {
+    padding: 8px 12px;
+    background: #667eea;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+}
+.dual-type-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+}
+.dual-type-item {
+    padding: 10px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+}
+@media (max-width: 768px) {
     .attack-type-checks {
         grid-template-columns: repeat(2, 1fr);
     }
-
-    .dual-type-list {
+    .attack-buttons {
         grid-template-columns: 1fr;
     }
-
-    .page-tabs {
-        flex-direction: column;
+    .dual-type-list {
+        grid-template-columns: 1fr;
     }
 }
