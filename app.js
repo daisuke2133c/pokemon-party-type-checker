@@ -905,10 +905,11 @@ function analyzeOwnPartyWeakness(party) {
                 party.some(function(pokemon) {
 
                     const multiplier =
-                        getTypeMultiplier(
+                        getTypeMultiplierWithAbility(
                             attackType,
-                            pokemon.types
-                        );
+                            pokemon
+                        )                        
+                );
 
 
                     return multiplier <= 0.5;
@@ -922,10 +923,11 @@ function analyzeOwnPartyWeakness(party) {
                 party.some(function(pokemon) {
 
                     const multiplier =
-                        getTypeMultiplier(
+                        getTypeMultiplierWithAbility(
                             attackType,
-                            pokemon.types
-                        );
+                            pokemon
+                        )                        
+                    );
 
 
                     return multiplier >= 2;
@@ -939,9 +941,9 @@ function analyzeOwnPartyWeakness(party) {
                 party.length > 0 &&
                 party.every(function(pokemon) {
 
-                    return getTypeMultiplier(
+                    return getTypeMultiplierWithAbility(
                         attackType,
-                        pokemon.types
+                        pokemon
                     ) === 1;
 
                 });
@@ -1020,7 +1022,58 @@ function analyzeOwnPartyWeakness(party) {
 // ==========================================
 // 複合タイプの最終倍率を計算
 // ==========================================
-
+function getTypeMultiplierWithAbility(
+    attackType,
+    pokemon
+) {
+    const multiplier =
+        getTypeMultiplier(
+            attackType,
+            pokemon.types
+        );
+    const ability = pokemon.ability;
+    if (
+        (
+            ability === 'ふゆう' ||
+            ability === 'どしょく'
+        ) &&
+        attackType === 'ground'
+    ) {
+        return 0;
+    }
+    if (
+        (
+            ability === 'ちょすい' ||
+            ability === 'よびみず'
+        ) &&
+        attackType === 'water'
+    ) {
+        return 0;
+    }
+    if (
+        (
+            ability === 'ひらいしん' ||
+            ability === 'ちくでん' ||
+            ability === 'でんきエンジン'
+        ) &&
+        attackType === 'electric'
+    ) {
+        return 0;
+    }
+    if (
+        ability === 'もらいび' &&
+        attackType === 'fire'
+    ) {
+        return 0;
+    }
+    if (
+        ability === 'そうしょく' &&
+        attackType === 'grass'
+    ) {
+        return 0;
+    }
+    return multiplier;
+}
 function getTypeMultiplier(
     attackType,
     defenseTypes
