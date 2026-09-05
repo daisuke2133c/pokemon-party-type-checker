@@ -372,6 +372,68 @@ function createPokemonDropdown(input, dropdown, id) {
     });
 
 }
+// ==========================================
+// 特性ドロップダウン
+// ==========================================
+function createAbilityDropdown(input, dropdown, id) {
+    input.addEventListener('focus', function() {
+        showAbilityDropdown(
+            dropdown,
+            input.value,
+            id
+        );
+        dropdown.style.display = 'block';
+    });
+    input.addEventListener('input', function() {
+        showAbilityDropdown(
+            dropdown,
+            input.value,
+            id
+        );
+    });
+    input.addEventListener('blur', function() {
+        setTimeout(function() {
+            dropdown.style.display = 'none';
+        }, 200);
+    });
+}
+// ==========================================
+// 特性ドロップダウンを表示
+// ==========================================
+function showAbilityDropdown(dropdown, searchText, id) {
+    dropdown.innerHTML = '';
+    const pokemonInput = document.getElementById(
+        id + '-pokemon-search'
+    );
+    if (!pokemonInput || !pokemonInput.value) {
+        return;
+    }
+    const pokemonName = pokemonInput.value.trim();
+    const pokemonInfo = pokemonDatabase[pokemonName];
+    if (!pokemonInfo || !pokemonInfo.abilities) {
+        return;
+    }
+    const searchHiragana =
+        toHiragana(searchText.toLowerCase());
+    pokemonInfo.abilities.forEach(function(ability) {
+        const abilityHiragana =
+            toHiragana(ability.toLowerCase());
+        if (
+            abilityHiragana.includes(searchHiragana) ||
+            ability.includes(searchText)
+        ) {
+            const item = document.createElement('div');
+            item.className = 'type-dropdown-item';
+            item.textContent = ability;
+            item.addEventListener('mousedown', function() {
+                input.value = ability;
+                input.dataset.ability = ability;
+                dropdown.style.display = 'none';
+            });
+            dropdown.appendChild(item);
+        }
+    });
+}
 
 
 // ==========================================
@@ -502,6 +564,14 @@ function updatePokemonTypesFromSearch(
 
             type2Input.dataset.type = '';
 
+        }
+                const abilityInput =
+            document.getElementById(
+                id + '-ability-search'
+            );
+        if (abilityInput) {
+            abilityInput.value = '';
+            abilityInput.dataset.ability = '';
         }
 
     }
@@ -723,12 +793,18 @@ function getPartyData(prefix) {
                 pokemonDatabase[pokemonName];
 
 
+            const abilityInput =
+                document.getElementById(
+                    `${prefix}${i}-ability-search`
+                );
+            const ability =
+                abilityInput ?
+                abilityInput.dataset.ability || '' :
+                '';
             party.push({
-
                 name: pokemonName,
-
-                types: pokemonInfo.types
-
+                types: pokemonInfo.types,
+                ability: ability
             });
 
         }
