@@ -263,6 +263,22 @@ function createPokemonSlot(id) {
     type2Container.appendChild(type2Dropdown);
 
 
+        // 特性
+    const abilityContainer = document.createElement('div');
+    abilityContainer.className = 'type-input-container';
+    abilityContainer.id = id + '-ability-container';
+    const abilityInput = document.createElement('input');
+    abilityInput.type = 'text';
+    abilityInput.id = id + '-ability-search';
+    abilityInput.className = 'type-search-input';
+    abilityInput.placeholder = '特性';
+    abilityInput.autocomplete = 'off';
+    const abilityDropdown = document.createElement('div');
+    abilityDropdown.className = 'type-dropdown-list';
+    abilityDropdown.id = id + '-ability-dropdown';
+    createAbilityDropdown(abilityInput, abilityDropdown, id);
+    abilityContainer.appendChild(abilityInput);
+    abilityContainer.appendChild(abilityDropdown);
     // スロットに追加
 
     div.appendChild(checkbox);
