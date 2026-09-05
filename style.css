@@ -493,3 +493,12 @@ button:active {
         flex-direction: column;
     }
 }
+.type-ability-row {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+}
+.type-ability-row .type-input-container {
+    flex: 1;
+    min-width: 0;
+}
