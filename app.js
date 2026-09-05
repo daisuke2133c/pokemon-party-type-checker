@@ -383,7 +383,8 @@ function createAbilityDropdown(input, dropdown, id) {
         showAbilityDropdown(
             dropdown,
             input.value,
-            id
+            id,
+            input
         );
         dropdown.style.display = 'block';
     });
@@ -391,7 +392,8 @@ function createAbilityDropdown(input, dropdown, id) {
         showAbilityDropdown(
             dropdown,
             input.value,
-            id
+            id,
+            input
         );
     });
     input.addEventListener('blur', function() {
@@ -403,7 +405,7 @@ function createAbilityDropdown(input, dropdown, id) {
 // ==========================================
 // 特性ドロップダウンを表示
 // ==========================================
-function showAbilityDropdown(dropdown, searchText, id) {
+function showAbilityDropdown(dropdown, searchText, id, input) {
     dropdown.innerHTML = '';
     const pokemonInput = document.getElementById(
         id + '-pokemon-search'
