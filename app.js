@@ -280,12 +280,14 @@ function createPokemonSlot(id) {
     abilityContainer.appendChild(abilityInput);
     abilityContainer.appendChild(abilityDropdown);
     // スロットに追加
-
     div.appendChild(checkbox);
     div.appendChild(pokemonContainer);
-    div.appendChild(type1Container);
-    div.appendChild(type2Container);
-    div.appendChild(abilityContainer);
+    const typeAbilityContainer = document.createElement('div');
+    typeAbilityContainer.className = 'type-ability-row';
+    typeAbilityContainer.appendChild(type1Container);
+    typeAbilityContainer.appendChild(type2Container);
+    typeAbilityContainer.appendChild(abilityContainer);
+    div.appendChild(typeAbilityContainer);
 
 
     return div;
