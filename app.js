@@ -285,6 +285,7 @@ function createPokemonSlot(id) {
     div.appendChild(pokemonContainer);
     div.appendChild(type1Container);
     div.appendChild(type2Container);
+    div.appendChild(abilityContainer);
 
 
     return div;
