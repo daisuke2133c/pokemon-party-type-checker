@@ -908,8 +908,7 @@ function analyzeOwnPartyWeakness(party) {
                         getTypeMultiplierWithAbility(
                             attackType,
                             pokemon
-                        )                        
-                );
+                        );
 
 
                     return multiplier <= 0.5;
@@ -926,8 +925,7 @@ function analyzeOwnPartyWeakness(party) {
                         getTypeMultiplierWithAbility(
                             attackType,
                             pokemon
-                        )                        
-                    );
+                        );
 
 
                     return multiplier >= 2;
