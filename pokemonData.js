@@ -313,11 +313,11 @@ const pokemonDatabase = {
     'ゴリランダー': { jp: 'ゴリランダー', types: ['grass'], abilities: ['しんりょく', 'グラスメイカー'] },
     'インテレオン': { jp: 'インテレオン', types: ['water'], abilities: ['げきりゅう', 'スナイパー'] },
     'セグレイブ': { jp: 'セグレイブ', types: ['ice', 'dragon'], abilities: ['ねつこうかん', 'アイスボディ'] },
-    'メガセグレイブ': { jp: 'メガセグレイブ', types: ['ice', 'dragon'], abilities: ['不明'] },
+    'メガセグレイブ': { jp: 'メガセグレイブ', types: ['ice', 'dragon'], abilities: ['ねつこうかん'] },
     'ボーマンダ': { jp: 'ボーマンダ', types: ['dragon', 'flying'], abilities: ['いかく', 'じしんかじょう'] },
     'メガボーマンダ': { jp: 'メガボーマンダ', types: ['dragon', 'flying'], abilities: ['スカイスキン'] },
     'グソクムシャ': { jp: 'グソクムシャ', types: ['water', 'insect'], abilities: ['ききかいひ'] },
-    'メガグソクムシャ': { jp: 'メガグソクムシャ', types: ['steel',  'insect'], abilities: ['不明'] },
+    'メガグソクムシャ': { jp: 'メガグソクムシャ', types: ['steel',  'insect'], abilities: ['かたいツメ'] },
     };
 
 // ポケモンリスト
