@@ -1442,47 +1442,24 @@ function initializeAttackTypeChecker() {
 function analyzeAttackTypeComplement() {
     console.log('攻撃タイプ補完分析開始');
     const checkedTypes = [];
-    document.querySelectorAll(
-        '#attackTypeChecks input[type="checkbox"]:checked'
-    ).forEach(function(checkbox) {
-        checkedTypes.push(
-            checkbox.value
-        );
+    document.querySelectorAll('#attackTypeChecks input[type="checkbox"]:checked').forEach(function(checkbox) {
+        checkedTypes.push(checkbox.value);
     });
-    const resultDiv =
-        document.getElementById(
-            'attackAnalysisResult'
-        );
+    const resultDiv = document.getElementById('attackAnalysisResult');
     if (checkedTypes.length === 0) {
-        resultDiv.innerHTML =
-            '<div class="warning">' +
-            '⚠️ 攻撃タイプを1つ以上選択してください' +
-            '</div>';
+        resultDiv.innerHTML = '<div class="warning">⚠️ 攻撃タイプを1つ以上選択してください</div>';
         resultDiv.classList.add('show');
         return;
     }
-    // ======================================
-    // 防御側タイプを作る
-    // ======================================
     const defenseTypesList = [];
-    // 単タイプ18種類
     typeList.forEach(function(type) {
         defenseTypesList.push({
             types: [type.en],
             ability: ''
         });
     });
-    // 複合タイプ153種類
-    for (
-        let i = 0;
-        i < typeList.length;
-        i++
-    ) {
-        for (
-            let j = i + 1;
-            j < typeList.length;
-            j++
-        ) {
+    for (let i = 0; i < typeList.length; i++) {
+        for (let j = i + 1; j < typeList.length; j++) {
             defenseTypesList.push({
                 types: [
                     typeList[i].en,
@@ -1492,153 +1469,90 @@ function analyzeAttackTypeComplement() {
             });
         }
     }
-    // ======================================
-    // ふゆうを持つポケモンのタイプを追加
-    // ======================================
-    const levitateTypeKeys = [];
-    Object.keys(pokemonDatabase).forEach(
-        function(pokemonName) {
-            const pokemonInfo =
-                pokemonDatabase[pokemonName];
-            if (
-                pokemonInfo.abilities &&
-                pokemonInfo.abilities.includes('ふゆう')
-            ) {
-                const typeKey =
-                    pokemonInfo.types
-                        .slice()
-                        .sort()
-                        .join('/');
-                if (
-                    !levitateTypeKeys.includes(
-                        typeKey
-                    )
-                ) {
-                    levitateTypeKeys.push(
-                        typeKey
-                    );
-                    defenseTypesList.push({
-                        types:
-                            pokemonInfo.types,
-                        ability: 'ふゆう'
-                    });
-                }
-            }
+    const specialAbilities = [
+        'ふゆう',
+        'どしょく',
+        'ちょすい',
+        'よびみず',
+        'ひらいしん',
+        'ちくでん',
+        'でんきエンジン',
+        'もらいび',
+        'そうしょく'
+    ];
+    const specialTypeKeys = [];
+    Object.keys(pokemonDatabase).forEach(function(pokemonName) {
+        const pokemonInfo = pokemonDatabase[pokemonName];
+        if (!pokemonInfo.types || !pokemonInfo.abilities) {
+            return;
         }
-    );
-    // ======================================
-    // 抜群で通らないタイプを探す
-    // ======================================
+        pokemonInfo.abilities.forEach(function(ability) {
+            if (!specialAbilities.includes(ability)) {
+                return;
+            }
+            const typeKey = pokemonInfo.types.slice().sort().join('/');
+            const key = typeKey + '|' + ability;
+            if (!specialTypeKeys.includes(key)) {
+                specialTypeKeys.push(key);
+                defenseTypesList.push({
+                    types: pokemonInfo.types,
+                    ability: ability
+                });
+            }
+        });
+    });
     const notSuperEffective = [];
-    defenseTypesList.forEach(
-        function(defenseData) {
-            const defenseTypes =
-                defenseData.types;
-            const ability =
-                defenseData.ability;
-            const canHitSuperEffective =
-                checkedTypes.some(
-                    function(attackType) {
-                        let multiplier =
-                            getTypeMultiplier(
-                                attackType,
-                                defenseTypes
-                            );
-                        // ふゆうの場合は
-                        // じめん技を無効にする
-                        if (
-                            ability === 'ふゆう' &&
-                            attackType === 'ground'
-                        ) {
-                            multiplier = 0;
-                        }
-                        return multiplier >= 1;
-                    }
-                );
-            if (!canHitSuperEffective) {
-                notSuperEffective.push(
-                    defenseData
-                );
-            }
+    defenseTypesList.forEach(function(defenseData) {
+        const defenseTypes = defenseData.types;
+        const ability = defenseData.ability;
+        const canHitSuperEffective = checkedTypes.some(function(attackType) {
+            const multiplier = getTypeMultiplierWithAbility(
+                attackType,
+                {
+                    types: defenseTypes,
+                    ability: ability
+                }
+            );
+            return multiplier >= 1;
+        });
+        if (!canHitSuperEffective) {
+            notSuperEffective.push(defenseData);
         }
-    );
-    // ======================================
-    // 結果表示
-    // ======================================
+    });
     let html = '';
-    // 選択した攻撃タイプ
-    html +=
-        '<div class="result-section">';
-    html +=
-        '<h4>⚔️ 選択した攻撃タイプ</h4>';
-    html +=
-        '<div class="selected-attack-types">';
+    html += '<div class="result-section">';
+    html += '<h4>⚔️ 選択した攻撃タイプ</h4>';
+    html += '<div class="selected-attack-types">';
     checkedTypes.forEach(function(type) {
-        html +=
-            `<span class="selected-attack-type">` +
-            `${getTypeNameJP(type)}` +
-            `</span>`;
+        html += `<span class="selected-attack-type">${getTypeNameJP(type)}</span>`;
     });
     html += '</div>';
     html += '</div>';
-    // 抜群で通らないタイプ
-    html +=
-        '<div class="result-section">';
-    html +=
-        `<h4>🛡️ 等倍以上で通らないタイプ ` +
-        `（${notSuperEffective.length}種類）</h4>`;
-    // 0種類の場合
-    if (
-        notSuperEffective.length === 0
-    ) {
-        html +=
-            '<div class="success">' +
-            '✅ 等倍以上で通らないタイプはありません' +
-            '</div>';
-    }
-    // 該当タイプがある場合
-    else {
-        html +=
-            '<div class="dual-type-list">';
-        notSuperEffective.forEach(
-            function(defenseData) {
-                const types =
-                    defenseData.types;
-                const ability =
-                    defenseData.ability;
-                const type1JP =
-                    getTypeNameJP(
-                        types[0]
-                    );
-                let typeName =
-                    type1JP;
-                // 複合タイプの場合
-                if (types[1]) {
-                    const type2JP =
-                        getTypeNameJP(
-                            types[1]
-                        );
-                    typeName =
-                        `${type1JP} / ${type2JP}`;
-                }
-                // ふゆうの場合
-                if (ability === 'ふゆう') {
-                    typeName += '（ふゆう）';
-                }
-                html +=
-                    `<div class="dual-type-item">` +
-                    `${typeName}` +
-                    `</div>`;
+    html += '<div class="result-section">';
+    html += `<h4>🛡️ 等倍以上で通らないタイプ（${notSuperEffective.length}種類）</h4>`;
+    if (notSuperEffective.length === 0) {
+        html += '<div class="success">✅ 等倍以上で通らないタイプはありません</div>';
+    } else {
+        html += '<div class="dual-type-list">';
+        notSuperEffective.forEach(function(defenseData) {
+            const types = defenseData.types;
+            const ability = defenseData.ability;
+            const type1JP = getTypeNameJP(types[0]);
+            let typeName = type1JP;
+            if (types[1]) {
+                const type2JP = getTypeNameJP(types[1]);
+                typeName = `${type1JP} / ${type2JP}`;
             }
-        );
+            if (ability) {
+                typeName += `（${ability}）`;
+            }
+            html += `<div class="dual-type-item">${typeName}</div>`;
+        });
         html += '</div>';
     }
     html += '</div>';
-    resultDiv.innerHTML =
-        html;
-    resultDiv.classList.add(
-        'show'
-    );
+    resultDiv.innerHTML = html;
+    resultDiv.classList.add('show');
     resultDiv.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
