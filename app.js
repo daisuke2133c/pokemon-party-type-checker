@@ -1526,74 +1526,6 @@ function analyzeAttackTypeComplement() {
             }
         }
     );
-     // ======================================
-    // どしょくを持つポケモンのタイプを追加
-    // ======================================
-    const levitateTypeKeys = [];
-    Object.keys(pokemonDatabase).forEach(
-        function(pokemonName) {
-            const pokemonInfo =
-                pokemonDatabase[pokemonName];
-            if (
-                pokemonInfo.abilities &&
-                pokemonInfo.abilities.includes('どしょく')
-            ) {
-                const typeKey =
-                    pokemonInfo.types
-                        .slice()
-                        .sort()
-                        .join('/');
-                if (
-                    !levitateTypeKeys.includes(
-                        typeKey
-                    )
-                ) {
-                    levitateTypeKeys.push(
-                        typeKey
-                    );
-                    defenseTypesList.push({
-                        types:
-                            pokemonInfo.types,
-                        ability: 'どしょく'
-                    });
-                }
-            }
-        }
-    );
-     // ======================================
-    // もらいびを持つポケモンのタイプを追加
-    // ======================================
-    const levitateTypeKeys = [];
-    Object.keys(pokemonDatabase).forEach(
-        function(pokemonName) {
-            const pokemonInfo =
-                pokemonDatabase[pokemonName];
-            if (
-                pokemonInfo.abilities &&
-                pokemonInfo.abilities.includes('もらいび')
-            ) {
-                const typeKey =
-                    pokemonInfo.types
-                        .slice()
-                        .sort()
-                        .join('/');
-                if (
-                    !levitateTypeKeys.includes(
-                        typeKey
-                    )
-                ) {
-                    levitateTypeKeys.push(
-                        typeKey
-                    );
-                    defenseTypesList.push({
-                        types:
-                            pokemonInfo.types,
-                        ability: 'もらいび'
-                    });
-                }
-            }
-        }
-    );
     // ======================================
     // 抜群で通らないタイプを探す
     // ======================================
@@ -1616,14 +1548,6 @@ function analyzeAttackTypeComplement() {
                         // じめん技を無効にする
                         if (
                             ability === 'ふゆう' &&
-                            attackType === 'ground'
-                        ) {
-                            multiplier = 0;
-                        }
-                        // どしょくの場合は
-                        // じめん技を無効にする
-                        if (
-                            ability === 'どしょく' &&
                             attackType === 'ground'
                         ) {
                             multiplier = 0;
