@@ -1396,13 +1396,8 @@ function initializeAttackTypeChecker() {
 
     typeList.forEach(function(type) {
 
-        const label =
-            document.createElement('label');
-
-
-        label.className =
-            'attack-type-check';
-
+        const label = document.createElement('label');
+        label.className = `attack-type-check type-${type.en}`;
 
         const checkbox =
             document.createElement('input');
