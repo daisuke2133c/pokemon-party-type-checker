@@ -217,6 +217,9 @@ function createPokemonSlot(id) {
         type1Dropdown,
         id + '-type1'
     );
+    type1Input.addEventListener('input', function() {
+    updateTypeInputColor(type1Input);
+});
 
 
     type1Container.appendChild(type1Input);
@@ -257,6 +260,9 @@ function createPokemonSlot(id) {
         type2Dropdown,
         id + '-type2'
     );
+    type2Input.addEventListener('input', function() {
+    updateTypeInputColor(type2Input);
+});
 
 
     type2Container.appendChild(type2Input);
@@ -628,9 +634,10 @@ function showTypeDropdown(
 
                     input.value =
                         type.jp;
-
                     input.dataset.type =
                         type.en;
+                    input.className =
+    `type-search-input type-badge type-${type.en}`;
 
 
                     dropdown.style.display =
@@ -648,7 +655,22 @@ function showTypeDropdown(
 
 }
 
-
+function updateTypeInputColor(input) {
+    const type = typeData.find(function(t) {
+        return t.jp === input.value;
+    });
+    input.className =
+        'type-search-input';
+    if (type) {
+        input.dataset.type =
+            type.en;
+        input.className =
+            `type-search-input type-badge type-${type.en}`;
+    } else {
+        input.dataset.type =
+            '';
+    }
+}
 // ==========================================
 // パーティを分析
 // ==========================================
