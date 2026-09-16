@@ -1538,13 +1538,14 @@ function analyzeAttackTypeComplement() {
             const types = defenseData.types;
             const ability = defenseData.ability;
             const type1JP = getTypeNameJP(types[0]);
-            let typeName = type1JP;
+            let typeName = `<span class="type-badge type-${types[0]}">${type1JP}</span>`;
             if (types[1]) {
                 const type2JP = getTypeNameJP(types[1]);
-                typeName = `${type1JP} / ${type2JP}`;
+                typeName += ` / <span class="type-badge type-${types[1]}">${type2JP}</span>`;
             }
             if (ability) {
-                typeName += `（${ability}）`;
+
+                typeName += ` <span class="ability-badge">（${ability}）</span>`;
             }
             html += `<div class="dual-type-item">${typeName}</div>`;
         });
