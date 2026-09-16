@@ -542,11 +542,9 @@ function updatePokemonTypesFromSearch(
             );
 
 
-        type1Input.value =
-            getTypeNameJP(types[0]);
-
-        type1Input.dataset.type =
-            types[0];
+        type1Input.value =getTypeNameJP(types[0]);
+        type1Input.dataset.type =types[0];
+        type1Input.className = `type-search-input type-badge type-${types[0]}`;
 
 
         const type2Input =
@@ -557,17 +555,15 @@ function updatePokemonTypesFromSearch(
 
         if (types[1]) {
 
-            type2Input.value =
-                getTypeNameJP(types[1]);
-
-            type2Input.dataset.type =
-                types[1];
+            type2Input.value =getTypeNameJP(types[1]);
+            type2Input.dataset.type =types[1];
+            type2Input.className =`type-search-input type-badge type-${types[1]}`;
 
         } else {
 
             type2Input.value = '';
-
             type2Input.dataset.type = '';
+            type2Input.className = 'type-search-input';
 
         }
                 const abilityInput =
@@ -1172,10 +1168,10 @@ function displayAnalysisResult(
 
         const typeStr =
             p.types
-                .map(function(t) {
-                    return getTypeNameJP(t);
-                })
-                .join('/');
+            .map(function(t) {
+                return `<span class="type-badge type-${t}">${getTypeNameJP(t)}</span>`;
+            })
+            .join(' / ');
 
 
         html +=
@@ -1215,10 +1211,10 @@ function displayAnalysisResult(
 
             const typeStr =
                 p.types
-                    .map(function(t) {
-                        return getTypeNameJP(t);
-                    })
-                    .join('/');
+                .map(function(t) {
+                    return `<span class="type-badge type-${t}">${getTypeNameJP(t)}</span>`;
+                })
+                .join(' / ');
 
 
             html +=
@@ -1318,7 +1314,7 @@ function displayTypeWeaknessTable(
 
                 html +=
                     `<td class="type-name">` +
-                    `${getTypeNameJP(type)}` +
+                    `<span class="type-badge type-${type}">${getTypeNameJP(type)}</span>` +
                     `</td>`;
 
 
