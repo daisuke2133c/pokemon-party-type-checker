@@ -1417,11 +1417,10 @@ function initializeAttackTypeChecker() {
 
         const text =
             document.createElement('span');
-
-
         text.textContent =
             type.jp;
-
+        text.className =
+            `type-badge type-${type.en}`;
 
         label.appendChild(checkbox);
 
