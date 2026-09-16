@@ -503,3 +503,73 @@ button:active {
     flex: 1;
     min-width: 0;
 }
+.type-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+.type-normal {
+    background: #A9B0B6;
+}
+.type-fire {
+    background: #F28A4B;
+}
+.type-water {
+    background: #4F9ED5;
+}
+.type-electric {
+    background: #F2D43D;
+    color: #333;
+    text-shadow: none;
+}
+.type-grass {
+    background: #63B568;
+}
+.type-ice {
+    background: #62C7C2;
+}
+.type-fighting {
+    background: #BD4831;
+}
+.type-poison {
+    background: #9F5BC0;
+}
+.type-ground {
+    background: #C87943;
+}
+.type-flying {
+    background: #86A9D8;
+}
+.type-psychic {
+    background: #E66D75;
+}
+.type-bug {
+    background: #8BC43F;
+}
+.type-rock {
+    background: #C7B98D;
+    color: #333;
+    text-shadow: none;
+}
+.type-ghost {
+    background: #696DA5;
+}
+.type-dragon {
+    background: #197BC0;
+}
+.type-dark {
+    background: #62616D;
+}
+.type-steel {
+    background: #5794A1;
+}
+.type-fairy {
+    background: #D979D1;
+}
+.ability-badge {
+    color: #555;
+    font-size: 0.9em;
+}
