@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // パーティスロットを初期化
     initializePartySlots();
 
+    // パーティ全解除ボタン
+    document.querySelectorAll('.clear-party-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            clearPartyFields(button.dataset.party);
+        });
+    });
+
     // パーティ分析ボタン
     document.getElementById('analyzeBtn')
         .addEventListener('click', analyzeParty);
@@ -69,6 +76,46 @@ function showPage(page) {
 
     }
 
+}
+
+function clearPartyFields(prefix) {
+    for (let i = 0; i < 6; i++) {
+        const checkbox = document.getElementById(`${prefix}${i}-check`);
+        const pokemonInput = document.getElementById(`${prefix}${i}-pokemon-search`);
+        const type1Input = document.getElementById(`${prefix}${i}-type1-search`);
+        const type2Input = document.getElementById(`${prefix}${i}-type2-search`);
+        const abilityInput = document.getElementById(`${prefix}${i}-ability-search`);
+
+        if (checkbox) {
+            checkbox.checked = true;
+            const slot = checkbox.closest('.pokemon-slot');
+            if (slot) {
+                slot.classList.remove('disabled');
+            }
+        }
+
+        if (pokemonInput) {
+            pokemonInput.value = '';
+            pokemonInput.dataset.pokemon = '';
+        }
+
+        if (type1Input) {
+            type1Input.value = '';
+            type1Input.dataset.type = '';
+            type1Input.className = 'type-search-input';
+        }
+
+        if (type2Input) {
+            type2Input.value = '';
+            type2Input.dataset.type = '';
+            type2Input.className = 'type-search-input';
+        }
+
+        if (abilityInput) {
+            abilityInput.value = '';
+            abilityInput.dataset.ability = '';
+        }
+    }
 }
 
 
