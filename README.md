@@ -1,143 +1,152 @@
-# ポケモンチャンピオンズ タイプ補完チェッカー
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポケモンチャンピオンズ タイプ補完チェッカー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-ポケモンチャンピオンズのチャンピオンズリーグ対戦で、パーティのタイプバランスを分析するツールです。
+<body>
 
-## 機能
+<div class="container">
 
-### 🎯 パーティ分析
-- **自分のパーティ**と**相手のパーティ**のタイプを入力
-- 各ポケモンは最大2つのタイプに対応
-- ポケモン選択時に自動でタイプが入力される
+    <h1>🔥ポケモンチャンピオンズ⚡</h1>
+    <h2>タイプ補完チェッカー</h2>
 
-### 📊 分析内容
+    <!-- ページ切り替え -->
+    <div class="page-tabs">
+        <button id="partyPageBtn" class="page-tab active">
+            🛡️ パーティ分析
+        </button>
 
-#### 1. 相手の一貫タイプ表示
-- 相手の攻撃タイプのうち、自分のパーティで**半減・無効で対応できないタイプ**を表示
-- 1匹でも対応できれば「一貫していない」と判定
-- 全て対応できなければ「一貫している」と判定
+        <button id="attackPageBtn" class="page-tab">
+            ⚔️ 攻撃タイプ補完
+        </button>
+    </div>
 
-#### 2. 自分のパーティの弱点
-- 自分のパーティが弱点とする全攻撃タイプを一覧表示
-- 各タイプの弱点がどの防御タイプなのかを表示
 
-#### 3. 攻撃タイプ補完チェッカー
-- 18個の攻撃タイプから複数選択
-- 選択した攻撃タイプのどれでも**等倍以上で通らないタイプ**を検索
-- 単タイプ、複合タイプ、特性を持つ組み合わせを一覧表示
+    <!-- ============================= -->
+    <!-- パーティ分析ページ -->
+    <!-- ============================= -->
 
-## 使い方
+    <div id="partyPage">
 
-### パーティ分析
-1. **自分のパーティ**のセクションで、6匹分のポケモンのタイプを入力
-2. **相手のパーティ**のセクションで、6匹分のポケモンのタイプを入力
-3. 「パーティを分析」ボタンをクリック
-4. 分析結果が表示されます
+        <section class="section">
 
-### 攻撃タイプ補完チェッカー
-1. ページタブから「⚔️ 攻撃タイプ補完」を選択
-2. 使用したい攻撃タイプにチェックを入れる
-3. 「🔍 攻撃タイプを分析」ボタンをクリック
-4. 通らないタイプの一覧が表示されます
+            <p>
+                自分と相手のパーティのポケモンとタイプを入力して、
+                パーティ全体の弱点と一貫性を分析できます。
+            </p>
 
-### タイプ名の一覧
+            <div class="parties-container">
 
-使用できるタイプ名（英語小文字）：
-- normal（ノーマル）
-- fire（ほのお）
-- water（みず）
-- electric（でんき）
-- grass（くさ）
-- ice（こおり）
-- fighting（かくとう）
-- poison（どく）
-- ground（じめん）
-- flying（ひこう）
-- psychic（エスパー）
-- insect（むし）
-- rock（いわ）
-- ghost（ゴースト）
-- dragon（ドラゴン）
-- dark（あく）
-- steel（はがね）
-- fairy（フェアリー）
+                <!-- 自分のパーティ -->
+                <div class="party">
 
-## 例
+                    <div class="party-header">
+                        <h3>👤 自分のパーティ</h3>
+                        <button type="button" class="secondary-action clear-party-btn" data-party="myPokemon">
+                            全解除
+                        </button>
+                    </div>
 
-### 入力例
-**自分のパーティ：**
-- ポケモン1: fire, water
-- ポケモン2: electric
-- ポケモン3: grass
-- ポケモン4: ice
-- ポケモン5: fighting
-- ポケモン6: dragon
+                    <div id="myParty" class="party-slots"></div>
 
-**相手のパーティ：**
-- ポケモン1: fire, grass
-- ポケモン2: water
-- ポケモン3: electric
-- ポケモン4: rock
-- ポケモン5: steel
-- ポケモン6: fairy
+                </div>
 
-### 分析結果例
-**相手の一貫タイプ：** なし（全てのタイプに対応可能）
-**自分の弱点：** みず、でんき、いわ など
 
-## ファイル構成
+                <!-- 相手のパーティ -->
+                <div class="party">
 
-- `index.html` - メインHTML（2つのページタブ：パーティ分析・攻撃補完チェッカー）
-- `style.css` - スタイリング
-- `typeChart.js` - ポケモンタイプ相性チャート
-- `pokemonData.js` - ポケモン図鑑データ（タイプ・特性）
-- `app.js` - メインロジック（UI制御・分析処理）
-- `README.md` - このファイル
+                    <div class="party-header">
+                        <h3>🎯 相手のパーティ</h3>
+                        <button type="button" class="secondary-action clear-party-btn" data-party="enemyPokemon">
+                            全解除
+                        </button>
+                    </div>
 
-## 技術仕様
+                    <div id="enemyParty" class="party-slots"></div>
 
-### タイプ相性の判定方法
+                </div>
 
-1. **相手の一貫タイプ判定**
-   - 相手のパーティに含まれる全タイプをリスト化
-   - 各タイプについて、自分のパーティに**半減・無効の対応ポケモンがいるか**を確認
-   - 対応ポケモンがなければ「一貫している」と判定
+            </div>
 
-2. **自分の弱点判定**
-   - 自分のパーティの各タイプについて、defenseChartから弱点タイプを抽出
-   - 全タイプの弱点をまとめて表示
+            <button id="analyzeBtn">
+                パーティを分析
+            </button>
 
-### 対応している特性
+        </section>
 
-攻撃タイプを無効化する以下の特性に対応しています：
 
-- `ふゆう`、`どしょく` → 地面タイプを無効
-- `ちょすい`、`よびみず` → 水タイプを無効
-- `ひらいしん`、`ちくでん`、`でんきエンジン` → 電気タイプを無効
-- `もらいび` → 炎タイプを無効
-- `そうしょく` → 草タイプを無効
+        <!-- 分析結果 -->
 
-## 現在の状態（2026年10月2日時点）
+        <section class="section">
 
-### 実装済み機能
-- ✅ パーティ分析（パーティ弱点・相手の一貫タイプ表示）
-- ✅ ポケモン選択時の自動タイプ入力
-- ✅ 特性選択機能
-- ✅ 攻撃タイプ補完チェッカー
-- ✅ 特性による攻撃タイプの無効化対応
-- ✅ 単タイプ・複合タイプの組み合わせ検索
-- ✅ ポケモン図鑑データベース統合
+            <div id="analysisResult" class="result"></div>
 
-### アーキテクチャ
-- Vanilla JavaScript（フレームワークなし）
-- ブラウザで直接動作（サーバー不要）
-- 依存なし
+        </section>
 
-## ライセンス
+    </div>
 
-MIT License
 
-## 注意事項
+    <!-- ============================= -->
+    <!-- 攻撃タイプ補完チェッカー -->
+    <!-- ============================= -->
 
-- このツールは個人的な学習・分析用です
-- ポケモンのタイプ相性は正式なゲーム仕様に基づいています
-- ゲームバージョンによる細かい差異には対応していない場合があります
+    <div id="attackPage" style="display: none;">
+
+        <section class="section">
+
+            <h3 class="attack-title">
+                ⚔️ 攻撃タイプ補完チェッカー
+            </h3>
+
+            <p>
+                使用したい攻撃タイプにチェックを入れてください。
+                <br>
+                選択した攻撃タイプのどれでも
+                <strong>等倍（１倍以上）にならないタイプ</strong>
+                を表示します。
+            </p>
+
+
+            <!-- タイプチェックボックス -->
+
+            <div id="attackTypeChecks" class="attack-type-checks"></div>
+
+
+            <!-- 分析ボタン -->
+            <div class="attack-buttons">
+            <button id="clearAttackBtn">
+                ☑️ 全解除
+            </button>
+            <button id="checkAttackBtn">
+                🔍 攻撃タイプを分析
+            </button>
+        </div>
+
+        </section>
+
+
+        <!-- 攻撃タイプ分析結果 -->
+
+        <section class="section">
+
+            <div id="attackAnalysisResult" class="result"></div>
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<!-- JavaScript -->
+
+<script src="typeChart.js"></script>
+<script src="pokemonData.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
