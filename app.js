@@ -8,7 +8,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // パーティスロットを初期化
     initializePartySlots();
-
+    // パーティリセットボタン
+    document.getElementById('resetMyPartyBtn').addEventListener('click', function() {
+        clearPartyFields('myPokemon');
+    });
+    document.getElementById('resetEnemyPartyBtn').addEventListener('click', function() {
+        clearPartyFields('enemyPokemon');
+    });
     // パーティ全解除ボタン
     document.querySelectorAll('.clear-party-btn').forEach(function(button) {
         button.addEventListener('click', function() {
