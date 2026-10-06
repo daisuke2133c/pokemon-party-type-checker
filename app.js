@@ -1458,6 +1458,18 @@ function showResult(html) {
 // 18タイプのチェックボックスを作る
 
 function initializeAttackTypeChecker() {
+    
+    const attackModeToggle = document.getElementById('attackModeToggle');
+    if (attackModeToggle) {
+        attackModeToggle.addEventListener('change', function() {
+            const modeText = document.getElementById('attackModeText');
+            if (this.checked) {
+                modeText.textContent = '抜群（2倍以上）にならないタイプ';
+            } else {
+                modeText.textContent = '等倍（1倍以上）にならないタイプ';
+            }
+        });
+    }
 
     const container =
         document.getElementById(
@@ -1567,10 +1579,11 @@ function analyzeAttackTypeComplement() {
         });
     });
     const notSuperEffective = [];
+    const isSuperEffectiveMode = attackModeToggle && attackModeToggle.checked;
     defenseTypesList.forEach(function(defenseData) {
         const defenseTypes = defenseData.types;
         const ability = defenseData.ability;
-        const canHitSuperEffective = checkedTypes.some(function(attackType) {
+        const canHitTarget = checkedTypes.some(function(attackType) {
             const multiplier = getTypeMultiplierWithAbility(
                 attackType,
                 {
@@ -1578,9 +1591,12 @@ function analyzeAttackTypeComplement() {
                     ability: ability
                 }
             );
+            if (isSuperEffectiveMode) {
+                return multiplier >= 2;
+            }
             return multiplier >= 1;
         });
-        if (!canHitSuperEffective) {
+        if (!canHitTarget) {
             notSuperEffective.push(defenseData);
         }
     });
