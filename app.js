@@ -880,7 +880,8 @@ function getPartyData(prefix) {
             party.push({
                 name: pokemonName,
                 types: pokemonInfo.types,
-                ability: ability
+                ability: ability,
+                index: i
             });
 
         }
@@ -912,7 +913,8 @@ function getPartyData(prefix) {
                         }
                     ).join('/')})`,
 
-                types: types
+                types: types,
+                index: i
 
             });
 
@@ -1226,6 +1228,14 @@ function displayAnalysisResult(
         '📊 パーティ弱点分析結果' +
         '</div>';
 
+    // 結果表示タブ
+    html += '<div class="result-tabs">';
+    html += '<button class="result-tab-btn active" data-tab="full-party">📊 全パーティ分析</button>';
+    html += '<button class="result-tab-btn" data-tab="3combo">🎲 3体組み合わせ</button>';
+    html += '</div>';
+
+    // 全パーティ分析タブ
+    html += '<div class="result-tab-content active" id="tab-full-party">';
 
     // 自分のパーティ
 
@@ -1310,11 +1320,117 @@ function displayAnalysisResult(
 
     }
 
+    html += '</div>'; // end tab-full-party
+
+    // 3体組み合わせタブ
+    html += '<div class="result-tab-content" id="tab-3combo">';
+    html += displayThreePokemonCombinations(myParty);
+    html += '</div>'; // end tab-3combo
 
     showResult(html);
 
+    // タブ切り替えのイベントリスナー設定
+    setTimeout(function() {
+        setupResultTabs();
+    }, 0);
+
 }
 
+// ==========================================
+// 3体の組み合わせを表示
+// ==========================================
+
+function displayThreePokemonCombinations(myParty) {
+    // 6体から3体の組み合わせをすべて生成
+    const combinations = [];
+    
+    for (let i = 0; i < myParty.length; i++) {
+        for (let j = i + 1; j < myParty.length; j++) {
+            for (let k = j + 1; k < myParty.length; k++) {
+                const combo = [myParty[i], myParty[j], myParty[k]];
+                const analysis = analyzeOwnPartyWeakness(combo);
+                const consistentCount = Object.keys(analysis.typeStatus).filter(function(type) {
+                    return analysis.typeStatus[type].isConsistent;
+                }).length;
+                
+                combinations.push({
+                    pokemonIndices: [i, j, k],
+                    pokemonNames: [myParty[i].name, myParty[j].name, myParty[k].name],
+                    analysis: analysis,
+                    consistentCount: consistentCount
+                });
+            }
+        }
+    }
+    
+    // 一貫タイプの数でソート（少ない順）
+    combinations.sort(function(a, b) {
+        return a.consistentCount - b.consistentCount;
+    });
+    
+    let html = '<div class="result-section">';
+    html += '<h4>🎲 パーティ3体の組み合わせ</h4>';
+    html += '<p style="font-size: 0.9em; color: #666; margin: 10px 0;">一貫タイプが少ない順に表示（バランスの良い順）</p>';
+    
+    combinations.forEach(function(combo, index) {
+        html += '<div class="combo-result" style="margin: 15px 0; padding: 12px; background: #f5f5f5; border-left: 4px solid #667eea; border-radius: 4px;">';
+        html += `<strong>${index + 1}. ${combo.pokemonNames.join(' + ')}</strong>`;
+        html += '<div style="margin-top: 8px; font-size: 0.95em;">';
+        
+        const consistentTypes = Object.keys(combo.analysis.typeStatus).filter(function(type) {
+            return combo.analysis.typeStatus[type].isConsistent;
+        });
+        
+        if (consistentTypes.length === 0) {
+            html += '<span style="color: #28a745; font-weight: bold;">✅ 一貫タイプなし</span>';
+        } else {
+            html += `<span style="color: #dc3545; font-weight: bold;">⚠️ 一貫タイプ ${consistentTypes.length} つ: </span>`;
+            html += consistentTypes.map(function(type) {
+                return `<span class="type-badge type-${type}" style="display: inline-block; margin: 2px 2px 2px 0;">${getTypeNameJP(type)}</span>`;
+            }).join('');
+        }
+        
+        html += '</div>';
+        html += '</div>';
+    });
+    
+    html += '</div>';
+    return html;
+}
+
+// ==========================================
+// 結果タブの切り替え処理
+// ==========================================
+
+function setupResultTabs() {
+    const tabButtons = document.querySelectorAll('.result-tab-btn');
+    const tabContents = document.querySelectorAll('.result-tab-content');
+    
+    tabButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const tabName = button.dataset.tab;
+            
+            // 全ボタンのアクティブクラスを削除
+            tabButtons.forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            
+            // 全コンテンツを非表示
+            tabContents.forEach(function(content) {
+                content.classList.remove('active');
+            });
+            
+            // クリックされたボタンをアクティブに
+            button.classList.add('active');
+            
+            // 対応するコンテンツを表示
+            const content = document.getElementById('tab-' + tabName);
+            if (content) {
+                content.classList.add('active');
+            }
+        });
+    });
+}
 
 // ==========================================
 // 一貫タイプを表示
