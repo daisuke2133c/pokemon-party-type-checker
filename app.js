@@ -1571,20 +1571,35 @@ function showResult(html) {
 // 攻撃タイプ補完チェッカー
 // ==========================================
 
+function getAttackModeSetting() {
+    const toggle = document.getElementById('attackModeToggle');
+    return toggle ? toggle.checked : false;
+}
+
+function updateAttackModeLabel() {
+    const modeText = document.getElementById('attackModeText');
+    const isSuperEffectiveMode = getAttackModeSetting();
+
+    if (!modeText) {
+        return;
+    }
+
+    if (isSuperEffectiveMode) {
+        modeText.textContent = '抜群（2倍以上）にならないタイプ';
+    } else {
+        modeText.textContent = '等倍（1倍以上）にならないタイプ';
+    }
+}
+
 // 18タイプのチェックボックスを作る
 
 function initializeAttackTypeChecker() {
-    
     const attackModeToggle = document.getElementById('attackModeToggle');
     if (attackModeToggle) {
         attackModeToggle.addEventListener('change', function() {
-            const modeText = document.getElementById('attackModeText');
-            if (this.checked) {
-                modeText.textContent = '抜群（2倍以上）にならないタイプ';
-            } else {
-                modeText.textContent = '等倍（1倍以上）にならないタイプ';
-            }
+            updateAttackModeLabel();
         });
+        updateAttackModeLabel();
     }
 
     const container =
@@ -1695,7 +1710,7 @@ function analyzeAttackTypeComplement() {
         });
     });
     const notSuperEffective = [];
-    const isSuperEffectiveMode = attackModeToggle && attackModeToggle.checked;
+    const isSuperEffectiveMode = getAttackModeSetting();
     defenseTypesList.forEach(function(defenseData) {
         const defenseTypes = defenseData.types;
         const ability = defenseData.ability;
@@ -1726,28 +1741,53 @@ function analyzeAttackTypeComplement() {
     html += '</div>';
     html += '</div>';
     html += '<div class="result-section">';
-    html += `<h4>🛡️ 等倍以上で通らないタイプ（${notSuperEffective.length}種類）</h4>`;
-    if (notSuperEffective.length === 0) {
-        html += '<div class="success">✅ 等倍以上で通らないタイプはありません</div>';
-    } else {
-        html += '<div class="dual-type-list">';
-        notSuperEffective.forEach(function(defenseData) {
-            const types = defenseData.types;
-            const ability = defenseData.ability;
-            const type1JP = getTypeNameJP(types[0]);
-            let typeName = `<span class="type-badge type-${types[0]}">${type1JP}</span>`;
-            if (types[1]) {
-                const type2JP = getTypeNameJP(types[1]);
-                typeName += ` / <span class="type-badge type-${types[1]}">${type2JP}</span>`;
-            }
-            if (ability) {
 
-                typeName += ` <span class="ability-badge">（${ability}）</span>`;
-            }
-            html += `<div class="dual-type-item">${typeName}</div>`;
-        });
-        html += '</div>';
+    if (isSuperEffectiveMode) {
+        html += `<h4>🛡️ 抜群以上で通らないタイプ（${notSuperEffective.length}種類）</h4>`;
+        if (notSuperEffective.length === 0) {
+            html += '<div class="success">✅ 抜群以上で通らないタイプはありません</div>';
+        } else {
+            html += '<div class="dual-type-list">';
+            notSuperEffective.forEach(function(defenseData) {
+                const types = defenseData.types;
+                const ability = defenseData.ability;
+                const type1JP = getTypeNameJP(types[0]);
+                let typeName = `<span class="type-badge type-${types[0]}">${type1JP}</span>`;
+                if (types[1]) {
+                    const type2JP = getTypeNameJP(types[1]);
+                    typeName += ` / <span class="type-badge type-${types[1]}">${type2JP}</span>`;
+                }
+                if (ability) {
+                    typeName += ` <span class="ability-badge">（${ability}）</span>`;
+                }
+                html += `<div class="dual-type-item">${typeName}</div>`;
+            });
+            html += '</div>';
+        }
+    } else {
+        html += `<h4>🛡️ 等倍以上で通らないタイプ（${notSuperEffective.length}種類）</h4>`;
+        if (notSuperEffective.length === 0) {
+            html += '<div class="success">✅ 等倍以上で通らないタイプはありません</div>';
+        } else {
+            html += '<div class="dual-type-list">';
+            notSuperEffective.forEach(function(defenseData) {
+                const types = defenseData.types;
+                const ability = defenseData.ability;
+                const type1JP = getTypeNameJP(types[0]);
+                let typeName = `<span class="type-badge type-${types[0]}">${type1JP}</span>`;
+                if (types[1]) {
+                    const type2JP = getTypeNameJP(types[1]);
+                    typeName += ` / <span class="type-badge type-${types[1]}">${type2JP}</span>`;
+                }
+                if (ability) {
+                    typeName += ` <span class="ability-badge">（${ability}）</span>`;
+                }
+                html += `<div class="dual-type-item">${typeName}</div>`;
+            });
+            html += '</div>';
+        }
     }
+
     html += '</div>';
     resultDiv.innerHTML = html;
     resultDiv.classList.add('show');
