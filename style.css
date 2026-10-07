@@ -238,6 +238,49 @@ button:active {
 
 
 /* ================================= */
+/* 分析結果タブ */
+/* ================================= */
+
+.result-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.result-tab-btn {
+    flex: 1;
+    background: #f0f0f0;
+    color: #555;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    width: auto;
+}
+
+.result-tab-btn:hover {
+    background: #e8e8e8;
+}
+
+.result-tab-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+}
+
+.result-tab-content {
+    display: none;
+}
+
+.result-tab-content.active {
+    display: block;
+}
+
+
+/* ================================= */
 /* 分析結果 */
 /* ================================= */
 
@@ -438,6 +481,14 @@ button:active {
     text-align: center;
 }
 
+.combo-result {
+    margin: 15px 0;
+    padding: 12px;
+    background: #f5f5f5;
+    border-left: 4px solid #667eea;
+    border-radius: 4px;
+}
+
 
 /* ================================= */
 /* スマホ対応 */
@@ -492,6 +543,14 @@ button:active {
 
     .page-tabs {
         flex-direction: column;
+    }
+
+    .result-tabs {
+        flex-direction: column;
+    }
+
+    .result-tab-btn {
+        width: 100%;
     }
 }
 .type-ability-row {
