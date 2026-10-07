@@ -1594,52 +1594,21 @@ function updateAttackModeLabel() {
 // 18タイプのチェックボックスを作る
 
 function initializeAttackTypeChecker() {
-    const attackModeToggle = document.getElementById('attackModeToggle');
-    if (attackModeToggle) {
-        attackModeToggle.addEventListener('change', function() {
-            updateAttackModeLabel();
-        });
-        updateAttackModeLabel();
-    }
-
-    const container =
-        document.getElementById(
-            'attackTypeChecks'
-        );
-
-
+    const container = document.getElementById('attackTypeChecks');
     typeList.forEach(function(type) {
-
         const label = document.createElement('label');
         label.className = `attack-type-check type-${type.en}`;
-
-        const checkbox =
-            document.createElement('input');
-
-
+        const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-
         checkbox.value = type.en;
-
         checkbox.dataset.type = type.en;
-
-
-        const text =
-            document.createElement('span');
-        text.textContent =
-            type.jp;
-        text.className =
-            `type-badge type-${type.en}`;
-
+        const text = document.createElement('span');
+        text.textContent = type.jp;
+        text.className = `type-badge type-${type.en}`;
         label.appendChild(checkbox);
-
         label.appendChild(text);
-
-
         container.appendChild(label);
-
     });
-
 }
 
 
