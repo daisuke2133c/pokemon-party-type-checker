@@ -33,7 +33,7 @@ const typeChart = {
     // 草タイプの攻撃
     grass: {
         superEffective: ['water', 'ground', 'rock'],
-        notVeryEffective: ['fire', 'grass', 'poison', 'flying', 'insect', 'dragon'],
+        notVeryEffective: ['fire', 'grass', 'poison', 'flying', 'insect', 'dragon', 'steel'],
         noEffect: []
     },
     
