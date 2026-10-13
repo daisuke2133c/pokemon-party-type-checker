@@ -1601,9 +1601,9 @@ function initializeAttackTypeChecker() {
     }
     container.innerHTML = '';
     const imageFiles = {
-        'あく': 'あく-.png',
+        'あく': 'あく.png',
         'いわ': 'いわ.png',
-        'かくとう': 'かくとう-.png',
+        'かくとう': 'かくとう.png',
         'くさ': 'くさ.png',
         'こおり': 'こおり.png',
         'じめん': 'じめん.png',
@@ -1614,11 +1614,11 @@ function initializeAttackTypeChecker() {
         'ほのお': 'ほのお.png',
         'みず': 'みず.png',
         'むし': 'むし.png',
-        'エスパー': 'エスパー-.png',
-        'ゴースト': 'ゴースト-.png',
-        'ドラゴン': 'ドラゴン-.png',
+        'エスパー': 'エスパー.png',
+        'ゴースト': 'ゴースト.png',
+        'ドラゴン': 'ドラゴン.png',
         'ノーマル': 'ノーマル.png',
-        'フェアリー': 'フェアリー-.png'
+        'フェアリー': 'フェアリー.png'
     };
     typeList.forEach(function(type) {
         const label = document.createElement('label');
