@@ -1593,22 +1593,51 @@ function updateAttackModeLabel() {
 
 // 18タイプのチェックボックスを作る
 
+
 function initializeAttackTypeChecker() {
     const container = document.getElementById('attackTypeChecks');
+    if (!container) {
+        return;
+    }
+    container.innerHTML = '';
+    const imageFiles = {
+        'あく': 'あく-.png',
+        'いわ': 'いわ.png',
+        'かくとう': 'かくとう-.png',
+        'くさ': 'くさ.png',
+        'こおり': 'こおり.png',
+        'じめん': 'じめん.png',
+        'でんき': 'でんき.png',
+        'どく': 'どく.png',
+        'はがね': 'はがね.png',
+        'ひこう': 'ひこう.png',
+        'ほのお': 'ほのお.png',
+        'みず': 'みず.png',
+        'むし': 'むし.png',
+        'エスパー': 'エスパー-.png',
+        'ゴースト': 'ゴースト-.png',
+        'ドラゴン': 'ドラゴン-.png',
+        'ノーマル': 'ノーマル.png',
+        'フェアリー': 'フェアリー-.png'
+    };
     typeList.forEach(function(type) {
         const label = document.createElement('label');
-        label.className = `attack-type-check type-${type.en}`;
+        label.className = 'attack-type-image-label';
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.value = type.en;
         checkbox.dataset.type = type.en;
-        const text = document.createElement('span');
-        text.textContent = type.jp;
-        text.className = `type-badge type-${type.en}`;
+        checkbox.setAttribute('aria-label', type.jp);
+        const image = document.createElement('img');
+        image.src = 'images/types/' + (imageFiles[type.jp] || type.jp + '.png');
+        image.alt = type.jp;
+        image.className = 'attack-type-image-file';
+        image.loading = 'lazy';
         label.appendChild(checkbox);
-        label.appendChild(text);
+        label.appendChild(image);
         container.appendChild(label);
     });
+    container.classList.add('attack-type-image-grid');
 }
 
 
