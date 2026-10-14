@@ -1635,6 +1635,10 @@ function initializeAttackTypeChecker() {
         image.loading = 'lazy';
         label.appendChild(checkbox);
         label.appendChild(image);
+        label.classList.add('not-selected');
+        checkbox.addEventListener('change', function() {
+            label.classList.toggle('not-selected', !checkbox.checked);
+        });
         container.appendChild(label);
     });
     container.classList.add('attack-type-image-grid');
