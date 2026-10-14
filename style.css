@@ -941,3 +941,9 @@ button:active {
         font-size: 12px;
     }
 }
+/* 未選択の攻撃タイプを白っぽくする */
+.attack-type-image-label.not-selected .attack-type-image-file {
+    filter: grayscale(0.8) brightness(1.25);
+    opacity: 0.55;
+    transition: filter 0.2s, opacity 0.2s;
+}
