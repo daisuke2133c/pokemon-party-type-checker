@@ -1707,8 +1707,8 @@ function analyzeAttackTypeComplement() {
             }
         });
     });
+    
     const notSuperEffective = [];
-    const isSuperEffectiveMode = getAttackModeSetting();
     defenseTypesList.forEach(function(defenseData) {
         const defenseTypes = defenseData.types;
         const ability = defenseData.ability;
@@ -1720,15 +1720,13 @@ function analyzeAttackTypeComplement() {
                     ability: ability
                 }
             );
-            if (isSuperEffectiveMode) {
-                return multiplier >= 2;
-            }
             return multiplier >= 1;
         });
         if (!canHitTarget) {
             notSuperEffective.push(defenseData);
         }
     });
+
     let html = '';
     html += '<div class="result-section">';
     html += '<h4>⚔️ 選択した攻撃タイプ</h4>';
@@ -1740,51 +1738,28 @@ function analyzeAttackTypeComplement() {
     html += '</div>';
     html += '<div class="result-section">';
 
-    if (isSuperEffectiveMode) {
-        html += `<h4>🛡️ 抜群以上で通らないタイプ（${notSuperEffective.length}種類）</h4>`;
-        if (notSuperEffective.length === 0) {
-            html += '<div class="success">✅ 抜群以上で通らないタイプはありません</div>';
-        } else {
-            html += '<div class="dual-type-list">';
-            notSuperEffective.forEach(function(defenseData) {
-                const types = defenseData.types;
-                const ability = defenseData.ability;
-                const type1JP = getTypeNameJP(types[0]);
-                let typeName = `<span class="type-badge type-${types[0]}">${type1JP}</span>`;
-                if (types[1]) {
-                    const type2JP = getTypeNameJP(types[1]);
-                    typeName += ` / <span class="type-badge type-${types[1]}">${type2JP}</span>`;
-                }
-                if (ability) {
-                    typeName += ` <span class="ability-badge">（${ability}）</span>`;
-                }
-                html += `<div class="dual-type-item">${typeName}</div>`;
-            });
-            html += '</div>';
-        }
+    html += `<h4>🛡️ 等倍以上で通らないタイプ（${notSuperEffective.length}種類）</h4>`;
+    if (notSuperEffective.length === 0) {
+        html += '<div class="success">✅ 等倍以上で通らないタイプはありません</div>';
     } else {
-        html += `<h4>🛡️ 等倍以上で通らないタイプ（${notSuperEffective.length}種類）</h4>`;
-        if (notSuperEffective.length === 0) {
-            html += '<div class="success">✅ 等倍以上で通らないタイプはありません</div>';
-        } else {
-            html += '<div class="dual-type-list">';
-            notSuperEffective.forEach(function(defenseData) {
-                const types = defenseData.types;
-                const ability = defenseData.ability;
-                const type1JP = getTypeNameJP(types[0]);
-                let typeName = `<span class="type-badge type-${types[0]}">${type1JP}</span>`;
-                if (types[1]) {
-                    const type2JP = getTypeNameJP(types[1]);
-                    typeName += ` / <span class="type-badge type-${types[1]}">${type2JP}</span>`;
-                }
-                if (ability) {
-                    typeName += ` <span class="ability-badge">（${ability}）</span>`;
-                }
-                html += `<div class="dual-type-item">${typeName}</div>`;
-            });
-            html += '</div>';
-        }
+        html += '<div class="dual-type-list">';
+        notSuperEffective.forEach(function(defenseData) {
+            const types = defenseData.types;
+            const ability = defenseData.ability;
+            const type1JP = getTypeNameJP(types[0]);
+            let typeName = `<span class="type-badge type-${types[0]}">${type1JP}</span>`;
+            if (types[1]) {
+                const type2JP = getTypeNameJP(types[1]);
+                typeName += ` / <span class="type-badge type-${types[1]}">${type2JP}</span>`;
+            }
+            if (ability) {
+                typeName += ` <span class="ability-badge">（${ability}）</span>`;
+            }
+            html += `<div class="dual-type-item">${typeName}</div>`;
+        });
+        html += '</div>';
     }
+
 
     html += '</div>';
     resultDiv.innerHTML = html;
