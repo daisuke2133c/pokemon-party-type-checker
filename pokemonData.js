@@ -21,7 +21,7 @@ const pokemonDatabase = {
     'リザードン': { jp: 'リザードン', types: ['fire', 'flying'] ,abilities: ['もうか','サンパワー']},
     'メガリザードンY': { jp: 'リザードン', types: ['fire', 'flying'] ,abilities: ['ひでり']},
     'メガリザードンX': { jp: 'リザードン', types: ['fire', 'dragon'] ,abilities: ['かたいツメ']},
-    'イダイトウ（オス）': { jp: 'イダイトウ（オス）', types: ['water', 'ghost'] ,abilities: ['てきおうりょく','すいすい']},
+    'イダイトウ（オス）': { jp: 'イダイトウ（オス）', types: ['water', 'ghost'] ,abilities: ['てきおうりょく','すいすい','かたやぶり']},
     'アーマーガア': { jp: 'アーマーガア', types: ['flying', 'steel'] ,abilities: ['プレッシャー','ミラーアーマー']},
     'サザンドラ': { jp: 'サザンドラ', types: ['dark', 'dragon'] ,abilities: ['ふゆう']},
     'ライチュウ': { jp: 'ライチュウ', types: ['electric'] ,abilities: ['ひらいしん','せいでんき']},
