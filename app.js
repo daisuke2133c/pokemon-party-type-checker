@@ -1649,36 +1649,46 @@ function initializeAttackTypeChecker() {
 // 攻撃タイプ補完を分析
 // ==========================================
 
+
 function analyzeAttackTypeComplement() {
     console.log('攻撃タイプ補完分析開始');
+
     const checkedTypes = [];
-    document.querySelectorAll('#attackTypeChecks input[type="checkbox"]:checked').forEach(function(checkbox) {
+    document.querySelectorAll(
+        '#attackTypeChecks input[type="checkbox"]:checked'
+    ).forEach(function(checkbox) {
         checkedTypes.push(checkbox.value);
     });
+
     const resultDiv = document.getElementById('attackAnalysisResult');
+
     if (checkedTypes.length === 0) {
-        resultDiv.innerHTML = '<div class="warning">⚠️ 攻撃タイプを1つ以上選択してください</div>';
+        resultDiv.innerHTML =
+            '<div class="warning">⚠️ 攻撃タイプを1つ以上選択してください</div>';
         resultDiv.classList.add('show');
         return;
     }
+
+    // 調べる防御タイプの組み合わせを作成
     const defenseTypesList = [];
+
     typeList.forEach(function(type) {
         defenseTypesList.push({
             types: [type.en],
             ability: ''
         });
     });
+
     for (let i = 0; i < typeList.length; i++) {
         for (let j = i + 1; j < typeList.length; j++) {
             defenseTypesList.push({
-                types: [
-                    typeList[i].en,
-                    typeList[j].en
-                ],
+                types: [typeList[i].en, typeList[j].en],
                 ability: ''
             });
         }
     }
+
+    // タイプ相性を無効にする特性
     const specialAbilities = [
         'ふゆう',
         'どしょく',
@@ -1690,20 +1700,28 @@ function analyzeAttackTypeComplement() {
         'もらいび',
         'そうしょく'
     ];
+
+    // 特性による無効化も調べる
     const specialTypeKeys = [];
+
     Object.keys(pokemonDatabase).forEach(function(pokemonName) {
         const pokemonInfo = pokemonDatabase[pokemonName];
+
         if (!pokemonInfo.types || !pokemonInfo.abilities) {
             return;
         }
+
         pokemonInfo.abilities.forEach(function(ability) {
             if (!specialAbilities.includes(ability)) {
                 return;
             }
+
             const typeKey = pokemonInfo.types.slice().sort().join('/');
             const key = typeKey + '|' + ability;
+
             if (!specialTypeKeys.includes(key)) {
                 specialTypeKeys.push(key);
+
                 defenseTypesList.push({
                     types: pokemonInfo.types,
                     ability: ability
@@ -1711,68 +1729,157 @@ function analyzeAttackTypeComplement() {
             }
         });
     });
-    
+
+    // 等倍以上で攻撃できないタイプ・特性を抽出
     const notSuperEffective = [];
+
     defenseTypesList.forEach(function(defenseData) {
-        const defenseTypes = defenseData.types;
-        const ability = defenseData.ability;
         const canHitTarget = checkedTypes.some(function(attackType) {
             const multiplier = getTypeMultiplierWithAbility(
                 attackType,
                 {
-                    types: defenseTypes,
-                    ability: ability
+                    types: defenseData.types,
+                    ability: defenseData.ability
                 }
             );
+
             return multiplier >= 1;
         });
+
         if (!canHitTarget) {
             notSuperEffective.push(defenseData);
         }
     });
 
-    let html = '';
-    html += '<div class="result-section">';
-    html += '<h4>⚔️ 選択した攻撃タイプ</h4>';
-    html += '<div class="selected-attack-types">';
-    checkedTypes.forEach(function(type) {
-        html += `<span class="selected-attack-type">${getTypeNameJP(type)}</span>`;
-    });
-    html += '</div>';
-    html += '</div>';
-    html += '<div class="result-section">';
+    // ポケモン情報を表示するHTMLを作成
+    let html = `
+        <div class="result-section">
+            <h4>⚔️ 選択した攻撃タイプ</h4>
+            <div class="selected-attack-types">
+                ${checkedTypes.map(function(type) {
+                    return `<span class="selected-attack-type">${getTypeNameJP(type)}</span>`;
+                }).join('')}
+            </div>
+        </div>
+    `;
 
-    html += `<h4>🛡️ 等倍以上で通らないタイプ（${notSuperEffective.length}種類）</h4>`;
+    html += `
+        <div class="result-section">
+            <h4>🛡️ 等倍以上で通らないタイプ（${notSuperEffective.length}種類）</h4>
+    `;
+
     if (notSuperEffective.length === 0) {
         html += '<div class="success">✅ 等倍以上で通らないタイプはありません</div>';
     } else {
-        html += '<div class="dual-type-list">';
-        notSuperEffective.forEach(function(defenseData) {
+        html += '<div class="defense-accordion-list">';
+
+        notSuperEffective.forEach(function(defenseData, index) {
             const types = defenseData.types;
             const ability = defenseData.ability;
-            const type1JP = getTypeNameJP(types[0]);
-            let typeName = `<span class="type-badge type-${types[0]}">${type1JP}</span>`;
-            if (types[1]) {
-                const type2JP = getTypeNameJP(types[1]);
-                typeName += ` / <span class="type-badge type-${types[1]}">${type2JP}</span>`;
+
+            const typeName = types.map(function(type) {
+                return getTypeNameJP(type);
+            }).join('・');
+
+            const heading = ability
+                ? `${typeName}（${ability}）`
+                : typeName;
+
+            // タイプと特性が完全一致するポケモンだけを検索
+            const matchingPokemon = Object.keys(pokemonDatabase)
+                .filter(function(pokemonName) {
+                    const info = pokemonDatabase[pokemonName];
+
+                    if (!info.types) {
+                        return false;
+                    }
+
+                    const pokemonTypes = info.types.slice().sort();
+                    const targetTypes = types.slice().sort();
+
+                    // タイプの数も含めて完全一致
+                    const sameTypes =
+                        pokemonTypes.length === targetTypes.length &&
+                        pokemonTypes.every(function(type, i) {
+                            return type === targetTypes[i];
+                        });
+
+                    if (!sameTypes) {
+                        return false;
+                    }
+
+                    // 特性条件がある場合は、その特性も一致させる
+                    if (ability) {
+                        return Array.isArray(info.abilities) &&
+                            info.abilities.includes(ability);
+                    }
+
+                    return true;
+                });
+
+            // detailsは初期状態で閉じている
+            html += `
+                <details class="defense-accordion">
+                    <summary>
+                        <span class="defense-accordion-title">
+                            ${heading}
+                        </span>
+                        <span class="defense-accordion-count">
+                            ${matchingPokemon.length}匹
+                        </span>
+                    </summary>
+
+                    <div class="defense-accordion-content">
+            `;
+
+            if (matchingPokemon.length === 0) {
+                html += '<p>該当するポケモンは登録されていません。</p>';
+            } else {
+                matchingPokemon.forEach(function(pokemonName) {
+                    const info = pokemonDatabase[pokemonName];
+
+                    const pokemonTypeText = info.types.map(function(type) {
+                        return getTypeNameJP(type);
+                    }).join('・');
+
+                    const abilities = info.abilities || [];
+
+                    html += `
+                        <div class="candidate-pokemon">
+                            <strong>${pokemonName}</strong>
+                            <div class="candidate-pokemon-types">
+                                ${pokemonTypeText}
+                            </div>
+                            <div class="candidate-pokemon-abilities">
+                                特性：${abilities.length > 0
+                                    ? abilities.join('、')
+                                    : '未登録'}
+                            </div>
+                        </div>
+                    `;
+                });
             }
-            if (ability) {
-                typeName += ` <span class="ability-badge">（${ability}）</span>`;
-            }
-            html += `<div class="dual-type-item">${typeName}</div>`;
+
+            html += `
+                    </div>
+                </details>
+            `;
         });
+
         html += '</div>';
     }
 
-
     html += '</div>';
+
     resultDiv.innerHTML = html;
     resultDiv.classList.add('show');
+
     resultDiv.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
     });
 }
+
 // 攻撃タイプのチェックをすべて外す
 
 function clearAttackTypes() {
