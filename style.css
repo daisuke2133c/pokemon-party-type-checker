@@ -947,3 +947,76 @@ button:active {
     opacity: 0.55;
     transition: filter 0.2s, opacity 0.2s;
 }
+
+/* 攻撃タイプ補完のアコーディオン */
+.defense-accordion-list {
+    display: grid;
+    gap: 8px;
+}
+
+.defense-accordion {
+    border: 1px solid #d5dbe5;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.defense-accordion summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px;
+    cursor: pointer;
+    font-weight: bold;
+    list-style: none;
+}
+
+.defense-accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.defense-accordion summary::after {
+    content: "＋";
+    font-size: 18px;
+}
+
+.defense-accordion[open] summary::after {
+    content: "－";
+}
+
+.defense-accordion[open] summary {
+    background: #f0f4fa;
+}
+
+.defense-accordion-count {
+    margin-left: auto;
+    color: #667085;
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
+.defense-accordion-content {
+    padding: 8px 12px;
+    border-top: 1px solid #e0e5ed;
+}
+
+.candidate-pokemon {
+    padding: 10px 4px;
+    border-bottom: 1px solid #e8ebf0;
+}
+
+.candidate-pokemon:last-child {
+    border-bottom: none;
+}
+
+.candidate-pokemon-types {
+    margin-top: 4px;
+    font-size: 0.9em;
+}
+
+.candidate-pokemon-abilities {
+    margin-top: 3px;
+    color: #596579;
+    font-size: 0.85em;
+}
